@@ -21,6 +21,8 @@ readonly class CreateOrderDTO
         public ?string $customerPhone = null,
         public ?string $deliveryAddress = null,
         public ?string $notes = null,
+        public bool $customerConsent = false,
+        public ?string $consentIp = null,
     ) {}
 
     public static function fromArray(array $data): self
@@ -46,6 +48,8 @@ readonly class CreateOrderDTO
             customerPhone: $data['customer_phone'] ?? null,
             deliveryAddress: $data['delivery_address'] ?? null,
             notes: $data['notes'] ?? null,
+            customerConsent: (bool) ($data['customer_consent'] ?? false),
+            consentIp: $data['consent_ip'] ?? null,
         );
     }
 }
