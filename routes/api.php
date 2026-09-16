@@ -40,3 +40,16 @@ Route::get('/admin/products', [\App\Http\Controllers\Api\AdminProductController:
 Route::post('/admin/products', [\App\Http\Controllers\Api\AdminProductController::class, 'store']);
 Route::patch('/admin/products/{product}/toggle', [\App\Http\Controllers\Api\AdminProductController::class, 'toggleAvailability']);
 Route::get('/admin/ingredients', [\App\Http\Controllers\Api\AdminProductController::class, 'ingredients']);
+
+// Operaciones Dinámicas de Salón (Comanda Activa, Adiciones, Transferir, Unir, Liberar)
+Route::get('/tables/{table}/active-order', [\App\Http\Controllers\Api\TableOperationController::class, 'activeOrder']);
+Route::post('/tables/{table}/add-items', [\App\Http\Controllers\Api\TableOperationController::class, 'addItems']);
+Route::post('/tables/{table}/transfer', [\App\Http\Controllers\Api\TableOperationController::class, 'transfer']);
+Route::post('/tables/{table}/merge', [\App\Http\Controllers\Api\TableOperationController::class, 'merge']);
+Route::post('/tables/{table}/release', [\App\Http\Controllers\Api\TableOperationController::class, 'release']);
+Route::patch('/order-items/{item}/modify', [\App\Http\Controllers\Api\TableOperationController::class, 'modifyItem']);
+
+// Módulo de Domicilios y Rastreo Público
+Route::get('/deliveries', [\App\Http\Controllers\Api\DeliveryController::class, 'index']);
+Route::post('/deliveries', [\App\Http\Controllers\Api\DeliveryController::class, 'store']);
+Route::get('/tracking/{order_number}', [\App\Http\Controllers\Api\DeliveryController::class, 'track']);

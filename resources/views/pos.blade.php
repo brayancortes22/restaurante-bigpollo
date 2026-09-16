@@ -339,13 +339,34 @@
                 row.className = `order-row ${selectedOrder?.id === ord.id ? 'selected' : ''}`;
                 row.onclick = () => selectOrder(ord);
 
+                const minsElapsed = Math.round((new Date() - new Date(ord.created_at)) / 60000);
+                const isDelayed = minsElapsed >= 20 && (ord.status === 'in_kitchen' || ord.status === 'pending');
+
+                let statusBadge = '';
+                if (ord.status === 'ready') {
+                    statusBadge = '<span style="background: rgba(16, 185, 129, 0.2); color: #34D399; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 0.72rem;">🛎️ Listo para Servir</span>';
+                } else if (ord.status === 'served') {
+                    statusBadge = '<span style="background: rgba(59, 130, 246, 0.2); color: #93C5FD; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 0.72rem;">🍽️ Consumiendo en Mesa</span>';
+                } else {
+                    statusBadge = '<span style="background: rgba(245, 158, 11, 0.2); color: #FBBF24; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 0.72rem;">👨‍🍳 En Cocina</span>';
+                }
+
+                if (isDelayed) {
+                    statusBadge += ` <span style="background: rgba(239, 68, 68, 0.25); color: #FCA5A5; border: 1px solid rgba(239, 68, 68, 0.5); padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 0.72rem;">⚠️ +${minsElapsed}m Retraso</span>`;
+                }
+
                 row.innerHTML = `
                     <div>
-                        <div style="font-weight: 800; font-size: 0.95rem;">#${ord.order_number}</div>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">${ord.table ? 'Mesa ' + ord.table.table_number : 'Para Llevar'} · ${ord.status}</div>
+                        <div style="font-weight: 800; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span>#${ord.order_number}</span>
+                            <span>${statusBadge}</span>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 3px;">
+                            ${ord.table ? 'Mesa ' + ord.table.table_number : 'Para Llevar / Domicilio'} · ${minsElapsed} min transcurridos
+                        </div>
                     </div>
                     <div style="text-align: right;">
-                        <div style="font-weight: 800; font-size: 1.1rem; color: #F59E0B;" class="tabular-nums">${formatCOP(ord.total)}</div>
+                        <div style="font-weight: 800; font-size: 1.1rem; color: #FEF08A;" class="tabular-nums">${formatCOP(ord.total)}</div>
                         <div style="font-size: 0.72rem; color: var(--text-dim);">${(ord.items || []).length} ítems</div>
                     </div>
                 `;

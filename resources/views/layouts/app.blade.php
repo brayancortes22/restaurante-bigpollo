@@ -10,6 +10,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
+    <!-- Driver.js for Interactive Guided Spotlight Tour -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.8.0/dist/driver.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.8.0/dist/driver.js.iife.js"></script>
+    <script src="/js/guided-tour.js" defer></script>
+    
     <style>
         :root {
             /* Paleta Oficial Big Pollo: Rojo Broaster & Amarillo Asado */
@@ -20,13 +25,13 @@
             --border-subtle: rgba(255, 255, 255, 0.08);
             --border-highlight: rgba(245, 158, 11, 0.25);
             
-            --bp-red: #DC2626;
+            --bp-red: #E52521;
             --bp-red-dark: #991B1B;
-            --bp-red-glow: rgba(220, 38, 38, 0.4);
+            --bp-red-glow: rgba(229, 37, 33, 0.45);
             
-            --bp-gold: #F59E0B;
-            --bp-yellow: #FBBF24;
-            --bp-gold-glow: rgba(245, 158, 11, 0.35);
+            --bp-gold: #FFD200;
+            --bp-yellow: #FFC107;
+            --bp-gold-glow: rgba(255, 210, 0, 0.4);
 
             --primary: var(--bp-red);
             --primary-hover: #B91C1C;
@@ -512,6 +517,133 @@
             transform: translateY(-1px);
             background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
         }
+
+        /* Driver.js Big Pollo Custom Theme (Mascota Oficial 👍) */
+        .driver-popover.bp-driver-popover {
+            background: #141923 !important;
+            color: #F8FAFC !important;
+            border: 2px solid #FFD200 !important;
+            border-radius: 18px !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(229, 37, 33, 0.4) !important;
+            padding: 1.25rem !important;
+            max-width: 380px !important;
+        }
+
+        .bp-driver-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .bp-driver-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #E52521;
+            border: 2px solid #FFD200;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .bp-driver-title {
+            font-weight: 800;
+            font-size: 0.98rem;
+            color: #FFFFFF;
+        }
+
+        .bp-driver-role-tag {
+            font-size: 0.68rem;
+            color: #FEF08A;
+            font-weight: 800;
+            background: rgba(229, 37, 33, 0.3);
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+        }
+
+        .bp-driver-body {
+            font-size: 0.85rem;
+            color: #CBD5E1;
+            line-height: 1.5;
+        }
+
+        .driver-popover-footer button {
+            background: #E52521 !important;
+            color: #FFFFFF !important;
+            border: 1px solid #FFD200 !important;
+            border-radius: 8px !important;
+            padding: 0.4rem 0.8rem !important;
+            font-weight: 700 !important;
+            font-size: 0.78rem !important;
+            text-shadow: none !important;
+        }
+
+        .driver-popover-footer button:hover {
+            background: #B91C1C !important;
+        }
+
+        /* Mobile Bottom App Bar (<= 768px) */
+        .mobile-bottom-bar {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: 72px; /* Espacio para barra táctil inferior */
+            }
+
+            .nav-links {
+                display: none !important; /* En celular, la navegación va abajo para fácil uso con pulgares */
+            }
+
+            .mobile-bottom-bar {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 64px;
+                background: rgba(20, 25, 35, 0.96);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border-top: 2px solid rgba(255, 210, 0, 0.35);
+                z-index: 9999;
+                align-items: center;
+                justify-content: space-around;
+                padding: 0 0.5rem;
+                box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.6);
+            }
+
+            .mobile-bottom-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+                color: var(--text-muted);
+                font-size: 0.68rem;
+                font-weight: 700;
+                gap: 2px;
+                min-width: 58px;
+                min-height: 48px; /* Touch target accesible (Fitts's Law) */
+                border-radius: 10px;
+                transition: all 0.2s;
+                cursor: pointer;
+                border: none;
+                background: none;
+            }
+
+            .mobile-bottom-item.active {
+                color: #FEF08A;
+                background: rgba(229, 37, 33, 0.3);
+                border: 1px solid rgba(255, 210, 0, 0.4);
+            }
+
+            .mobile-bottom-icon {
+                font-size: 1.25rem;
+                line-height: 1;
+            }
+        }
     </style>
     @yield('styles')
 </head>
@@ -519,9 +651,8 @@
     <!-- Navbar Oficial Big Pollo -->
     <nav class="navbar">
         <a href="/" class="brand-badge">
-            <div class="brand-emblem">
-                🍗
-                <div class="brand-emblem-thumb">👍</div>
+            <div class="brand-emblem" style="overflow: hidden; padding: 0; background: #E52521; border: 2px solid #FFD200;">
+                <img src="/images/big_pollo_avatar.png" alt="Big Pollo Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
             </div>
             <div class="brand-texts">
                 <div class="brand-name">Big Pollo</div>
@@ -573,7 +704,7 @@
 
             @auth
             <li>
-                <button class="tutorial-btn" onclick="openTutorialModal()">
+                <button class="tutorial-btn" onclick="startBigPolloTour()">
                     <span>📖</span> Guía de Uso
                 </button>
             </li>
@@ -958,6 +1089,31 @@
             }
         }
     </script>
+    
+    <!-- Mobile Bottom App Bar para Meseros y Personal de Salón (<= 768px) -->
+    <div class="mobile-bottom-bar">
+        <a href="/waiter" class="mobile-bottom-item {{ request()->is('waiter') ? 'active' : '' }}">
+            <span class="mobile-bottom-icon">🍽️</span>
+            <span>Mesas</span>
+        </a>
+        <a href="/kds" class="mobile-bottom-item {{ request()->is('kds') ? 'active' : '' }}">
+            <span class="mobile-bottom-icon">👨‍🍳</span>
+            <span>Cocina</span>
+        </a>
+        <a href="/pos" class="mobile-bottom-item {{ request()->is('pos') ? 'active' : '' }}">
+            <span class="mobile-bottom-icon">💳</span>
+            <span>Caja</span>
+        </a>
+        <a href="/admin/menu" class="mobile-bottom-item {{ request()->is('admin/menu') ? 'active' : '' }}">
+            <span class="mobile-bottom-icon">🍗</span>
+            <span>Menú</span>
+        </a>
+        <button type="button" class="mobile-bottom-item" onclick="startBigPolloTour()">
+            <span class="mobile-bottom-icon">📖</span>
+            <span>Tour</span>
+        </button>
+    </div>
+
     @yield('scripts')
 </body>
 </html>

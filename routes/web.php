@@ -11,10 +11,14 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Rutas Públicas (Cumplimiento Legal y Transparencia Ley 1581)
+// Rutas Públicas (Cumplimiento Legal y Transparencia Ley 1581 & Rastreo de Domicilios)
 Route::get('/privacy', function () {
     return view('privacy');
 })->name('privacy');
+
+Route::get('/track/{order_number}', function ($order_number) {
+    return view('tracking', ['order_number' => $order_number]);
+})->name('order.track');
 
 // Autenticación de Personal (Login & Logout)
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');

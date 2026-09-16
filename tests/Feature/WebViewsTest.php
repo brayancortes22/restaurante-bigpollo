@@ -82,7 +82,7 @@ class WebViewsTest extends TestCase
         $response = $this->actingAs($this->mesero)->get('/waiter');
         $response->assertStatus(200)
             ->assertSee('Comandero Mesero')
-            ->assertSee('Selecciona Mesa del Salón');
+            ->assertSee('Salón de Mesas Big Pollo');
     }
 
     public function test_kds_screen_renders_for_authenticated_cocina(): void

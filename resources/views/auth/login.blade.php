@@ -217,9 +217,8 @@
 <div class="login-wrapper">
     <div class="login-card">
         <div class="login-header">
-            <div class="login-emblem">
-                🍗
-                <div class="login-thumb">👍</div>
+            <div class="login-emblem" style="padding: 0; overflow: hidden; background: #E52521; border: 2px solid #FFD200; width: 84px; height: 84px; box-shadow: 0 8px 25px rgba(229, 37, 33, 0.5);">
+                <img src="/images/big_pollo_avatar.png" alt="Big Pollo Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 18px;">
             </div>
             <h1 class="login-title">Acceso de Personal</h1>
             <p class="login-subtitle">Sistema POS, KDS & Gestión Restaurante Big Pollo</p>
