@@ -30,3 +30,7 @@ Route::get('/pos', function () {
 Route::get('/privacy', function () {
     return view('privacy');
 });
+
+Route::get('/admin/menu', function () {
+    return view('admin.menu');
+});

@@ -43,4 +43,12 @@ class WebViewsTest extends TestCase
             ->assertSee('Ley 1581 de 2012')
             ->assertSee('Derechos del Titular (Derechos ARCO)');
     }
+
+    public function test_admin_menu_screen_renders_successfully(): void
+    {
+        $response = $this->get('/admin/menu');
+        $response->assertStatus(200)
+            ->assertSee('Catálogo')
+            ->assertSee('Recetario Big Pollo');
+    }
 }

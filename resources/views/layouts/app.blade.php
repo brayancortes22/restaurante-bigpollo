@@ -3,30 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Restaurante Big Pollo') - Cloud POS & KDS</title>
+    <title>@yield('title', 'Restaurante Big Pollo') - Asado & Broaster Cloud POS</title>
     
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-base: #0B0F17;
-            --surface-1: #151D2C;
-            --surface-2: #1E293B;
-            --surface-3: #334155;
+            /* Paleta Oficial Big Pollo: Rojo Broaster & Amarillo Asado */
+            --bg-base: #0B0E14;
+            --surface-1: #141923;
+            --surface-2: #1C2332;
+            --surface-3: #29344A;
             --border-subtle: rgba(255, 255, 255, 0.08);
-            --border-highlight: rgba(255, 255, 255, 0.16);
-            --primary: #6366F1;
-            --primary-hover: #4F46E5;
-            --primary-glow: rgba(99, 102, 241, 0.35);
+            --border-highlight: rgba(245, 158, 11, 0.25);
+            
+            --bp-red: #DC2626;
+            --bp-red-dark: #991B1B;
+            --bp-red-glow: rgba(220, 38, 38, 0.4);
+            
+            --bp-gold: #F59E0B;
+            --bp-yellow: #FBBF24;
+            --bp-gold-glow: rgba(245, 158, 11, 0.35);
+
+            --primary: var(--bp-red);
+            --primary-hover: #B91C1C;
+            --primary-glow: var(--bp-red-glow);
+
             --success: #10B981;
             --success-glow: rgba(16, 185, 129, 0.3);
             --warning: #F59E0B;
             --warning-glow: rgba(245, 158, 11, 0.3);
-            --danger: #F43F5E;
-            --danger-glow: rgba(244, 63, 94, 0.3);
+            --danger: #EF4444;
+            --danger-glow: rgba(239, 68, 68, 0.3);
+
             --text-main: #F8FAFC;
             --text-muted: #94A3B8;
             --text-dim: #64748B;
@@ -48,13 +60,13 @@
             overflow-x: hidden;
         }
 
-        /* Glassmorphism Navigation */
+        /* Top Brand Header */
         .navbar {
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(20, 25, 35, 0.9);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--border-subtle);
-            padding: 0.85rem 1.5rem;
+            border-bottom: 2px solid rgba(245, 158, 11, 0.3);
+            padding: 0.75rem 1.5rem;
             position: sticky;
             top: 0;
             z-index: 50;
@@ -67,52 +79,85 @@
         .brand-badge {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.85rem;
             text-decoration: none;
             color: inherit;
         }
 
-        .brand-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #F59E0B 0%, #EA580C 100%);
+        /* Emblema Oficial del Pollo con Pulgar Arriba 👍 */
+        .brand-emblem {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: radial-gradient(circle, #FDE047 0%, #F59E0B 60%, #DC2626 100%);
+            border: 2px solid #FEF08A;
+            box-shadow: 0 4px 16px rgba(220, 38, 38, 0.45);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.35rem;
-            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+            font-size: 1.6rem;
+            position: relative;
+            flex-shrink: 0;
+            animation: bounce-subtle 3s infinite ease-in-out;
         }
 
-        .brand-title {
-            font-size: 1.15rem;
-            font-weight: 800;
-            letter-spacing: -0.025em;
-            background: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 100%);
+        .brand-emblem-thumb {
+            position: absolute;
+            bottom: -3px;
+            right: -3px;
+            font-size: 0.95rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        @keyframes bounce-subtle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+
+        .brand-texts {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 1.3rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #FFFFFF 0%, #FEF08A 60%, #F59E0B 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(220, 38, 38, 0.2);
         }
 
-        .brand-subtitle {
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: #F59E0B;
+        .brand-slogan-badge {
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: #FEF08A;
+            background: linear-gradient(90deg, #DC2626, #991B1B);
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            border: 1px solid rgba(245, 158, 11, 0.5);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.06em;
+            width: fit-content;
+            margin-top: 2px;
         }
 
+        /* Nav Links */
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.45rem;
             list-style: none;
+            flex-wrap: wrap;
         }
 
         .nav-link {
-            padding: 0.55rem 1rem;
+            padding: 0.55rem 0.95rem;
             border-radius: 10px;
-            font-size: 0.88rem;
-            font-weight: 600;
+            font-size: 0.86rem;
+            font-weight: 700;
             text-decoration: none;
             color: var(--text-muted);
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -129,9 +174,29 @@
 
         .nav-link.active {
             color: #FFFFFF;
-            background: var(--surface-2);
-            border-color: var(--border-highlight);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.25) 0%, rgba(245, 158, 11, 0.2) 100%);
+            border-color: rgba(245, 158, 11, 0.5);
+            box-shadow: 0 4px 14px rgba(220, 38, 38, 0.25);
+        }
+
+        .tutorial-btn {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            color: #000000 !important;
+            font-weight: 800 !important;
+            padding: 0.55rem 1rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .tutorial-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(245, 158, 11, 0.5);
         }
 
         /* Pulse live indicator */
@@ -145,15 +210,98 @@
         }
 
         @keyframes pulse-ring {
-            0% {
-                box-shadow: 0 0 0 0 var(--success-glow);
+            0% { box-shadow: 0 0 0 0 var(--success-glow); }
+            70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .main-container {
+            flex: 1;
+            padding: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Executive Commercial Footer */
+        .footer-commercial {
+            background: #0D111A;
+            border-top: 1px solid var(--border-subtle);
+            padding: 2.5rem 1.5rem 1.5rem;
+            margin-top: auto;
+        }
+
+        .footer-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
             }
-            70% {
-                box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-            }
+        }
+
+        .footer-col h4 {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .footer-col p, .footer-col li {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .footer-col a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover {
+            color: #F59E0B;
+        }
+
+        .trust-badge {
+            background: var(--surface-1);
+            border: 1px solid var(--border-subtle);
+            padding: 0.65rem 0.85rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            flex-wrap: wrap;
+            gap: 0.75rem;
         }
 
         /* Toast Container */
@@ -178,49 +326,113 @@
             border-radius: 12px;
             color: #FFFFFF;
             font-size: 0.88rem;
-            font-weight: 500;
+            font-weight: 600;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            transform: translateY(20px);
-            opacity: 0;
             animation: toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .toast.success { border-left: 4px solid var(--success); }
         .toast.error { border-left: 4px solid var(--danger); }
-        .toast.info { border-left: 4px solid var(--primary); }
+        .toast.info { border-left: 4px solid var(--bp-gold); }
 
         @keyframes toast-in {
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .main-container {
-            flex: 1;
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
             padding: 1.5rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            width: 100%;
         }
 
-        /* Utility classes */
-        .tabular-nums {
-            font-variant-numeric: tabular-nums;
+        .modal-tutorial-card {
+            background: var(--surface-1);
+            border: 2px solid rgba(245, 158, 11, 0.4);
+            border-radius: 22px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 780px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .role-tabs {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+            overflow-x: auto;
+        }
+
+        .role-tab-btn {
+            padding: 0.6rem 1.1rem;
+            border-radius: 12px;
+            background: var(--surface-2);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .role-tab-btn.active {
+            background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+            color: #FFFFFF;
+            border-color: #F59E0B;
+        }
+
+        .tutorial-step {
+            background: var(--surface-2);
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .step-num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #F59E0B;
+            color: #000;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
     </style>
     @yield('styles')
 </head>
 <body>
+    <!-- Navbar Oficial Big Pollo -->
     <nav class="navbar">
         <a href="/" class="brand-badge">
-            <div class="brand-icon">🍗</div>
-            <div>
-                <div class="brand-title">Restaurante Big Pollo</div>
-                <div class="brand-subtitle">Cloud POS & KDS Pro</div>
+            <div class="brand-emblem">
+                🍗
+                <div class="brand-emblem-thumb">👍</div>
+            </div>
+            <div class="brand-texts">
+                <div class="brand-name">Big Pollo</div>
+                <div class="brand-slogan-badge">Asado & Broaster</div>
             </div>
         </a>
 
@@ -238,7 +450,12 @@
             </li>
             <li>
                 <a href="/pos" class="nav-link {{ request()->is('pos') ? 'active' : '' }}">
-                    <span>💳</span> Caja & Factus DIAN
+                    <span>💳</span> Caja POS & Factus
+                </a>
+            </li>
+            <li>
+                <a href="/admin/menu" class="nav-link {{ request()->is('admin/menu') ? 'active' : '' }}">
+                    <span>🍗</span> Admin Menú
                 </a>
             </li>
             <li>
@@ -246,16 +463,110 @@
                     <span>🛡️</span> Habeas Data (SIC)
                 </a>
             </li>
+            <li>
+                <button class="tutorial-btn" onclick="openTutorialModal()">
+                    <span>📖</span> Guía de Uso
+                </button>
+            </li>
         </ul>
     </nav>
 
+    <!-- Main Container -->
     <main class="main-container">
         @yield('content')
     </main>
 
+    <!-- Executive Commercial Footer -->
+    <footer class="footer-commercial">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>🍗 Restaurante Big Pollo — Asado & Broaster</h4>
+                <p>
+                    Plataforma SaaS Comercial Multi-Tenant para atención en salón, comanderos móviles, cocina KDS en tiempo real, gestión automática de recetas de inventario y facturación electrónica autorizada por la DIAN.
+                </p>
+                <div style="margin-top: 0.85rem; font-size: 0.78rem; color: var(--text-dim);">
+                    <strong>NIT:</strong> 900.123.456-7 · <strong>Dirección:</strong> Calle Principal # 10-20<br>
+                    <strong>Horario:</strong> Lunes a Domingo de 10:00 AM a 10:00 PM
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>🧭 Módulos del Sistema</h4>
+                <ul>
+                    <li><a href="/waiter">🍽️ Comandero Meseros (Mobile)</a></li>
+                    <li><a href="/kds">👨‍🍳 Pantalla Cocina KDS</a></li>
+                    <li><a href="/pos">💳 Terminal POS y Arqueo Z</a></li>
+                    <li><a href="/admin/menu">🍗 Administración de Platos y Recetas</a></li>
+                    <li><a href="/privacy">🛡️ Política de Habeas Data Ley 1581</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>🛡️ Seguridad y Cumplimiento</h4>
+                <div class="trust-badge">
+                    <span style="font-size: 1.2rem;">🏛️</span>
+                    <div>
+                        <div style="font-size: 0.8rem; font-weight: 700; color: #FFFFFF;">Habeas Data Ley 1581 / SIC</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">Tratamiento de datos comensales blindado</div>
+                    </div>
+                </div>
+
+                <div class="trust-badge">
+                    <span style="font-size: 1.2rem;">⚡</span>
+                    <div>
+                        <div style="font-size: 0.8rem; font-weight: 700; color: #10B981;">🟢 Factus API DIAN: Conectado</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">Timbrado oficial UBL 2.1 con CUFE y QR</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>
+                © {{ date('Y') }} Restaurante Big Pollo Asado & Broaster. Todos los derechos reservados.
+            </div>
+            <div>
+                Desarrollado con arquitectura limpia por <strong>Brayan Stid Cortés Lombana (bscl)</strong>.
+            </div>
+        </div>
+    </footer>
+
+    <!-- 📖 Modal Tutorial / Guía Interactiva Paso a Paso -->
+    <div id="tutorial-modal" class="modal-overlay">
+        <div class="modal-tutorial-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="font-size: 1.8rem;">📖</div>
+                    <div>
+                        <h3 style="font-size: 1.3rem; font-weight: 900; color: #FFFFFF;">Guía de Uso Rápida del Sistema</h3>
+                        <p style="font-size: 0.82rem; color: var(--text-muted);">Aprende a operar el restaurante en 2 minutos según tu puesto de trabajo.</p>
+                    </div>
+                </div>
+                <button onclick="closeTutorialModal()" style="background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">✕</button>
+            </div>
+
+            <!-- Role Tabs -->
+            <div class="role-tabs">
+                <button class="role-tab-btn active" onclick="switchTutorialRole('waiter', this)">🍽️ Mesero (Toma de Pedidos)</button>
+                <button class="role-tab-btn" onclick="switchTutorialRole('kds', this)">👨‍🍳 Cocina (KDS en Vivo)</button>
+                <button class="role-tab-btn" onclick="switchTutorialRole('pos', this)">💳 Cajero (POS y Facturas)</button>
+                <button class="role-tab-btn" onclick="switchTutorialRole('admin', this)">🍗 Administrador (Menú y Recetas)</button>
+            </div>
+
+            <!-- Tutorial Content -->
+            <div id="tutorial-content">
+                <!-- Injected via JS -->
+            </div>
+
+            <button onclick="closeTutorialModal()" style="width: 100%; margin-top: 1.25rem; padding: 0.85rem; border-radius: 12px; background: linear-gradient(135deg, #F59E0B, #D97706); color: #000; font-weight: 800; border: none; cursor: pointer;">
+                ¡Entendido, volver a trabajar! 👍
+            </button>
+        </div>
+    </div>
+
     <!-- ⚡ Simulador Flotante de Hora Pico -->
     <div id="sim-panel" style="position: fixed; bottom: 1.5rem; left: 1.5rem; z-index: 9999; font-family: 'Plus Jakarta Sans', sans-serif;">
-        <div id="sim-card" style="background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(16px); border: 2px solid var(--primary); border-radius: 18px; padding: 1.25rem; width: 340px; box-shadow: 0 16px 36px rgba(0,0,0,0.6); display: none; margin-bottom: 0.75rem;">
+        <div id="sim-card" style="background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(16px); border: 2px solid var(--bp-gold); border-radius: 18px; padding: 1.25rem; width: 340px; box-shadow: 0 16px 36px rgba(0,0,0,0.6); display: none; margin-bottom: 0.75rem;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
                 <div style="font-weight: 800; font-size: 0.95rem; color: #FFFFFF; display: flex; align-items: center; gap: 0.4rem;">
                     <span>⚡</span> Simulador de Hora Pico
@@ -263,10 +574,10 @@
                 <span class="pulse-dot"></span>
             </div>
             <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.4;">
-                Simula una avalancha de 5 mesas pidiendo combos simultáneamente, cocina KDS a máxima capacidad y cobro con Factura DIAN.
+                Simula una ráfaga masiva de pedidos en 5 mesas, cocina KDS y cobro con Factura DIAN.
             </p>
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                <button id="sim-burst-btn" onclick="runPeakHourSimulation()" style="width: 100%; padding: 0.75rem; border-radius: 12px; background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: #000; font-weight: 800; font-size: 0.85rem; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 0 4px 12px var(--warning-glow);">
+                <button id="sim-burst-btn" onclick="runPeakHourSimulation()" style="width: 100%; padding: 0.75rem; border-radius: 12px; background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%); color: #FFF; font-weight: 800; font-size: 0.85rem; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 0 4px 12px var(--bp-red-glow);">
                     <span>🚀</span> Iniciar Ráfaga de Pedidos
                 </button>
                 <button id="sim-kds-btn" onclick="runKdsCookSimulation()" style="width: 100%; padding: 0.65rem; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border-highlight); color: #FFF; font-weight: 700; font-size: 0.8rem; cursor: pointer;">
@@ -281,7 +592,7 @@
             </div>
         </div>
 
-        <button id="sim-toggle-btn" onclick="toggleSimPanel()" style="padding: 0.75rem 1.25rem; border-radius: 30px; background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%); color: #FFF; font-weight: 800; font-size: 0.85rem; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 8px 24px var(--primary-glow); transition: all 0.2s;">
+        <button id="sim-toggle-btn" onclick="toggleSimPanel()" style="padding: 0.75rem 1.25rem; border-radius: 30px; background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%); color: #FFF; font-weight: 800; font-size: 0.85rem; border: 1px solid #F59E0B; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 8px 24px var(--bp-red-glow); transition: all 0.2s;">
             <span>⚡ Modo Simulación Hora Pico</span>
         </button>
     </div>
@@ -294,7 +605,7 @@
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             
-            const icon = type === 'success' ? '✅' : (type === 'error' ? '❌' : 'ℹ️');
+            const icon = type === 'success' ? '✅' : (type === 'error' ? '❌' : '🍗');
             toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
             
             container.appendChild(toast);
@@ -313,6 +624,60 @@
                 currency: 'COP',
                 maximumFractionDigits: 0
             }).format(amount);
+        }
+
+        // --- 📖 Lógica de Tutorial Onboarding ---
+        const tutorialGuides = {
+            waiter: [
+                { num: 1, title: 'Selecciona la Mesa', desc: 'Toca la mesa que deseas atender en la grilla superior. Las mesas en verde están libres y en naranja ocupadas.' },
+                { num: 2, title: 'Agrega los Platos al Carrito', desc: 'Navega por las pestañas de categorías (Broaster, Asado, Bebidas) y usa el botón (+) para añadir porciones. El subtotal y el 8% de impoconsumo se calculan solos.' },
+                { num: 3, title: 'Enviar a Cocina', desc: 'Verifica la casilla de Habeas Data (Ley 1581) y presiona "Enviar a Cocina (KDS)". La orden viajará al instante a las pantallas de los cocineros y la mesa cambiará a estado Ocupada.' }
+            ],
+            kds: [
+                { num: 1, title: 'Monitorea las Comandas en Tiempo Real', desc: 'Cada ticket muestra el número de mesa, platos pedidos, notas especiales y un cronómetro con semáforo (Verde < 10m, Amarillo 10-20m, Rojo parpadeante si hay demora).' },
+                { num: 2, title: 'Comenzar Preparación', desc: 'Toca el botón morado "Preparar" cuando pongas las presas en la freidora o asador. El ticket cambiará a borde azul.' },
+                { num: 3, title: '¡Plato Listo para Servir!', desc: 'Toca el botón verde "¡Plato Listo!" cuando el pedido esté emplatado. El mesero sabrá de inmediato que puede pasar a recogerlo.' }
+            ],
+            pos: [
+                { num: 1, title: 'Apertura de Caja', desc: 'Al iniciar la jornada, haz clic en "Abrir Turno" e ingresa la base de dinero en efectivo con la que comienzas.' },
+                { num: 2, title: 'Cobro de la Cuenta', desc: 'Selecciona la comanda en la lista izquierda, elige si el cliente paga en Efectivo, Tarjeta o Nequi, y presiona "Registrar Pago". La mesa se liberará sola.' },
+                { num: 3, title: 'Factura Electrónica DIAN', desc: 'Presiona "Emitir Factura DIAN con Factus". El sistema enviará la factura a la DIAN y te mostrará el código CUFE y el QR reglamentario.' },
+                { num: 4, title: 'Cierre Z y Arqueo', desc: 'Al final del turno, toca "Arqueo Z / Cerrar" e ingresa el efectivo contado físicamente para ver si hay sobrante, faltante o cuadre exacto.' }
+            ],
+            admin: [
+                { num: 1, title: 'Crear Nuevos Platos', desc: 'Ve a "Admin Menú" y presiona "➕ Nuevo Plato". Ingresa el nombre del producto, categoría y precio de venta.' },
+                { num: 2, title: 'Vincular Receta de Inventario', desc: 'Agrega los ingredientes que componen el plato (ej. 0.5 kg de Pollo, 2 Arepas). Cuando el mesero venda este plato, el sistema descontará automáticamente los insumos del almacén.' },
+                { num: 3, title: 'Pausar Platos Agotados', desc: 'Si se acaba un ingrediente, puedes pausar el plato con 1 clic para que los meseros no puedan pedirlo hasta que haya stock.' }
+            ]
+        };
+
+        function openTutorialModal() {
+            document.getElementById('tutorial-modal').style.display = 'flex';
+            renderTutorialContent('waiter');
+        }
+
+        function closeTutorialModal() {
+            document.getElementById('tutorial-modal').style.display = 'none';
+        }
+
+        function switchTutorialRole(role, btn) {
+            document.querySelectorAll('.role-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderTutorialContent(role);
+        }
+
+        function renderTutorialContent(role) {
+            const container = document.getElementById('tutorial-content');
+            const steps = tutorialGuides[role] || [];
+            container.innerHTML = steps.map(s => `
+                <div class="tutorial-step">
+                    <div class="step-num">${s.num}</div>
+                    <div>
+                        <div style="font-size: 0.95rem; font-weight: 800; color: #FFFFFF; margin-bottom: 0.2rem;">${s.title}</div>
+                        <div style="font-size: 0.83rem; color: var(--text-muted); line-height: 1.5;">${s.desc}</div>
+                    </div>
+                </div>
+            `).join('');
         }
 
         // --- ⚡ Lógica de Simulación de Hora Pico ---
@@ -334,7 +699,6 @@
             showToast('⚡ Ráfaga de hora pico iniciada en 5 mesas...', 'info');
 
             try {
-                // Obtener mesas y menú
                 const tablesRes = await fetch('/api/tables');
                 const tablesJson = await tablesRes.json();
                 const menuRes = await fetch('/api/menu');
@@ -345,7 +709,7 @@
                 (menuJson.data || []).forEach(c => (c.products || []).forEach(p => products.push(p)));
 
                 if (tables.length === 0 || products.length === 0) {
-                    setSimLog('No hay mesas o productos disponibles.', '#F43F5E');
+                    setSimLog('No hay mesas o productos disponibles.', '#EF4444');
                     return;
                 }
 
@@ -378,22 +742,21 @@
                         const json = await orderRes.json();
                         showToast(`Mesa ${table.table_number}: Comanda #${json.data.order_number} enviada`, 'success');
                     }
-                    await new Promise(r => setTimeout(r, 600)); // Pausa visual
+                    await new Promise(r => setTimeout(r, 600));
                 }
 
                 setSimLog('✅ 5 comandas enviadas a Cocina KDS.', '#10B981');
                 showToast('¡Ráfaga completada! Revisa la pestaña Cocina KDS', 'success');
 
-                // Si estamos en /waiter, refrescar mesas
                 if (typeof loadTables === 'function') loadTables();
             } catch (e) {
-                setSimLog('Error en la simulación.', '#F43F5E');
+                setSimLog('Error en la simulación.', '#EF4444');
                 console.error(e);
             }
         }
 
         async function runKdsCookSimulation() {
-            setSimLog('👨‍🍳 Cocinando y despachando...', '#6366F1');
+            setSimLog('👨‍🍳 Cocinando y despachando...', '#DC2626');
             showToast('Cocina acelerada: procesando todos los pedidos...', 'info');
 
             try {
@@ -402,7 +765,6 @@
                 const orders = (json.data || []).filter(o => ['pending', 'in_kitchen'].includes(o.status));
 
                 for (const ord of orders) {
-                    // Pasar a in_kitchen
                     await fetch(`/api/orders/${ord.id}/status`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -410,7 +772,6 @@
                     });
                     await new Promise(r => setTimeout(r, 300));
 
-                    // Pasar a ready
                     await fetch(`/api/orders/${ord.id}/status`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -423,7 +784,7 @@
                 setSimLog('✅ Todos los pedidos listos en cocina.', '#10B981');
                 if (typeof loadKdsOrders === 'function') loadKdsOrders();
             } catch (e) {
-                setSimLog('Error en cocina.', '#F43F5E');
+                setSimLog('Error en cocina.', '#EF4444');
             }
         }
 
@@ -432,7 +793,6 @@
             showToast('Cobrando comandas y emitiendo factura electrónica...', 'info');
 
             try {
-                // Asegurar turno de caja abierto
                 await fetch('/api/cash-shifts/open', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -444,15 +804,13 @@
                 const orders = (json.data || []).filter(o => o.status !== 'paid' && o.status !== 'cancelled');
 
                 for (const ord of orders) {
-                    // 1. Cobrar
                     await fetch(`/api/orders/${ord.id}/status`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                         body: JSON.stringify({ status: 'paid' })
                     });
 
-                    // 2. Emitir Factus DIAN
-                    const invRes = await fetch(`/api/orders/${ord.id}/invoice`, {
+                    await fetch(`/api/orders/${ord.id}/invoice`, {
                         method: 'POST',
                         headers: { 'Accept': 'application/json' }
                     });
@@ -465,7 +823,7 @@
                 if (typeof loadOrders === 'function') loadOrders();
                 if (typeof loadShiftStatus === 'function') loadShiftStatus();
             } catch (e) {
-                setSimLog('Error en cobro.', '#F43F5E');
+                setSimLog('Error en cobro.', '#EF4444');
             }
         }
     </script>

@@ -34,3 +34,9 @@ Route::post('/orders/{order}/invoice', [OrderController::class, 'emitInvoice']);
 Route::get('/cash-shifts/current', [\App\Http\Controllers\Api\CashShiftController::class, 'current']);
 Route::post('/cash-shifts/open', [\App\Http\Controllers\Api\CashShiftController::class, 'open']);
 Route::post('/cash-shifts/close', [\App\Http\Controllers\Api\CashShiftController::class, 'close']);
+
+// Administración de Productos, Platos y Recetas (Inventario)
+Route::get('/admin/products', [\App\Http\Controllers\Api\AdminProductController::class, 'index']);
+Route::post('/admin/products', [\App\Http\Controllers\Api\AdminProductController::class, 'store']);
+Route::patch('/admin/products/{product}/toggle', [\App\Http\Controllers\Api\AdminProductController::class, 'toggleAvailability']);
+Route::get('/admin/ingredients', [\App\Http\Controllers\Api\AdminProductController::class, 'ingredients']);
