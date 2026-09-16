@@ -3,7 +3,7 @@
 @section('title', 'Comandero Mesero')
 
 @section('styles')
-    <link rel="stylesheet" href="/css/waiter.css">
+    <link rel="stylesheet" href="/css/waiter.css?v={{ time() }}">
 @endsection
 
 @section('content')
@@ -198,5 +198,5 @@
 @endsection
 
 @section('scripts')
-    <script src="/js/waiter.js"></script>
+    <script src="/js/waiter.js?v={{ time() }}"></script>
 @endsection

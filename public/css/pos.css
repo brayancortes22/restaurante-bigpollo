@@ -506,3 +506,27 @@
 .audit-btn-add-item:active {
     background: #B91C1C;
 }
+
+@media (max-width: 640px) {
+    .shift-banner {
+        padding: 0.85rem 1rem;
+        margin-bottom: 1rem;
+        border-radius: 14px;
+    }
+    .shift-title {
+        font-size: 1rem;
+    }
+    .orders-section {
+        padding: 1rem 0.85rem;
+        border-radius: 16px;
+    }
+    .order-row {
+        padding: 0.85rem;
+        border-radius: 12px;
+    }
+    .checkout-panel {
+        padding: 1rem 0.85rem;
+        border-radius: 16px;
+        position: static;
+    }
+}

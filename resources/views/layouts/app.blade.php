@@ -228,6 +228,27 @@
             width: 100%;
         }
 
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.6rem 0.85rem;
+            }
+            .brand-emblem {
+                width: 38px;
+                height: 38px;
+                border-radius: 10px;
+            }
+            .brand-name {
+                font-size: 1.15rem;
+            }
+            .brand-slogan-badge {
+                font-size: 0.62rem;
+                padding: 0.1rem 0.4rem;
+            }
+            .main-container {
+                padding: 0.75rem 0.65rem;
+            }
+        }
+
         /* Executive Commercial Footer */
         .footer-commercial {
             background: #0D111A;
@@ -643,6 +664,26 @@
                 font-size: 1.25rem;
                 line-height: 1;
             }
+
+            .mobile-header-actions {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+            }
+
+            .mobile-user-pill {
+                display: flex;
+                align-items: center;
+                gap: 0.35rem;
+                background: var(--surface-2);
+                border: 1px solid var(--border-subtle);
+                border-radius: 10px;
+                padding: 0.25rem 0.4rem;
+            }
+        }
+
+        .mobile-header-actions {
+            display: none;
         }
     </style>
     @yield('styles')
@@ -659,6 +700,27 @@
                 <div class="brand-slogan-badge">Asado & Broaster</div>
             </div>
         </a>
+
+        <!-- Mobile Header Actions (Control rápido de turno y usuario) -->
+        <div class="mobile-header-actions">
+            @auth
+            <div class="mobile-user-pill">
+                <span class="user-role-tag role-{{ Auth::user()->role }}" style="font-size: 0.65rem; padding: 0.15rem 0.4rem;">
+                    {{ \App\Enums\UserRole::tryFrom(Auth::user()->role)?->label() ?? ucfirst(Auth::user()->role) }}
+                </span>
+                <form action="{{ route('logout') }}" method="POST" style="margin: 0; display: inline;">
+                    @csrf
+                    <button type="submit" class="btn-logout" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" title="Cerrar Turno">
+                        🚪
+                    </button>
+                </form>
+            </div>
+            @else
+            <a href="/login" class="btn-nav-login" style="padding: 0.35rem 0.65rem; font-size: 0.78rem;">
+                🔒 Entrar
+            </a>
+            @endauth
+        </div>
 
         <ul class="nav-links">
             @auth

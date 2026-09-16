@@ -803,3 +803,170 @@
 .btn-op-confirm:active {
     background: #B91C1C;
 }
+
+/* --------------------------------------------------------------------------
+   Mobile Responsive & Ergonomía Táctil (<= 640px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+    .tables-section {
+        padding: 0.85rem 0.75rem;
+        margin-bottom: 0.85rem;
+        border-radius: 16px;
+    }
+
+    .tables-header {
+        margin-bottom: 0.5rem;
+    }
+
+    .tables-title {
+        font-size: 0.95rem;
+    }
+
+    .table-cards-grid {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 0.6rem;
+        padding: 0.2rem 0.1rem 0.5rem;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+
+    .table-cards-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .table-card {
+        flex: 0 0 95px;
+        min-width: 95px;
+        scroll-snap-align: start;
+        padding: 0.7rem 0.5rem;
+        border-radius: 12px;
+    }
+
+    .table-num {
+        font-size: 1rem;
+    }
+
+    .table-status-label {
+        font-size: 0.64rem;
+    }
+
+    .table-capacity-label {
+        font-size: 0.62rem;
+    }
+
+    /* Barra de Búsqueda Rápida en Celular */
+    .waiter-search-box {
+        margin-bottom: 0.75rem;
+    }
+
+    .waiter-search-input {
+        padding: 0.75rem 2.4rem 0.75rem 2.6rem;
+        font-size: 0.88rem;
+        border-radius: 12px;
+    }
+
+    .search-icon-symbol {
+        left: 0.85rem;
+        font-size: 1.05rem;
+    }
+
+    /* Pestañas de Categorías en Celular */
+    .category-tabs {
+        gap: 0.45rem;
+        margin-bottom: 0.85rem;
+        padding-bottom: 0.35rem;
+        scrollbar-width: none;
+    }
+
+    .category-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .cat-btn {
+        padding: 0.55rem 0.9rem;
+        font-size: 0.8rem;
+        border-radius: 10px;
+        min-height: 40px;
+    }
+}
+
+@media (max-width: 540px) {
+    /* En celulares, los platos se muestran en 1 columna horizontal ergonómica */
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+    }
+
+    .product-card {
+        padding: 0.85rem 1rem;
+        min-height: auto;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.85rem;
+    }
+
+    .product-card > div:first-of-type {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .product-name {
+        font-size: 0.95rem;
+        font-weight: 800;
+        margin-bottom: 0.2rem;
+        line-height: 1.25;
+        white-space: normal;
+    }
+
+    .product-desc {
+        font-size: 0.72rem;
+        margin-bottom: 0.25rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .product-bottom-row {
+        margin-top: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.35rem;
+        flex-shrink: 0;
+    }
+
+    .product-price {
+        font-size: 1.05rem;
+        font-weight: 900;
+        color: #FEF08A;
+        text-align: right;
+    }
+
+    .product-touch-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .btn-touch-sub {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+        border-radius: 10px;
+    }
+
+    .btn-touch-add {
+        min-width: 48px;
+        height: 48px;
+        font-size: 1.4rem;
+        padding: 0 0.85rem;
+        border-radius: 12px;
+    }
+}
