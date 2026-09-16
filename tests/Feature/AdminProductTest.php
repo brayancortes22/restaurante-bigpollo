@@ -15,7 +15,17 @@ class AdminProductTest extends TestCase
 
     public function test_can_render_admin_menu_blade_view(): void
     {
-        $response = $this->get('/admin/menu');
+        $tenant = Tenant::create(['name' => 'Big Pollo Admin Test', 'slug' => 'bp-admin-test']);
+        $admin = \App\Models\User::create([
+            'tenant_id' => $tenant->id,
+            'name' => 'Admin User',
+            'email' => 'admin_view@test.com',
+            'password' => bcrypt('secret123'),
+            'role' => 'admin',
+            'is_active' => true,
+        ]);
+
+        $response = $this->actingAs($admin)->get('/admin/menu');
 
         $response->assertStatus(200);
         $response->assertViewIs('admin.menu');

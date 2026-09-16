@@ -419,6 +419,99 @@
             justify-content: center;
             flex-shrink: 0;
         }
+
+        /* User Auth Badge & Logout */
+        .user-auth-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            background: var(--surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 0.35rem 0.65rem 0.35rem 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        .user-role-tag {
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            background: rgba(245, 158, 11, 0.2);
+            color: #FEF08A;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .user-role-tag.role-admin {
+            background: rgba(220, 38, 38, 0.25);
+            color: #FCA5A5;
+            border-color: rgba(220, 38, 38, 0.5);
+        }
+
+        .user-role-tag.role-cajero {
+            background: rgba(16, 185, 129, 0.2);
+            color: #6EE7B7;
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        .user-role-tag.role-cocina {
+            background: rgba(245, 158, 11, 0.2);
+            color: #FDE047;
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .user-name-text {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            max-width: 140px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #FCA5A5;
+            padding: 0.35rem 0.65rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .btn-logout:hover {
+            background: #DC2626;
+            color: #FFFFFF;
+        }
+
+        .btn-nav-login {
+            background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+            color: #FFFFFF;
+            border: 1px solid #F59E0B;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-size: 0.84rem;
+            font-weight: 800;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+            transition: all 0.2s;
+        }
+
+        .btn-nav-login:hover {
+            transform: translateY(-1px);
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+        }
     </style>
     @yield('styles')
 </head>
@@ -437,37 +530,75 @@
         </a>
 
         <ul class="nav-links">
-            <li>
-                <a href="/waiter" class="nav-link {{ request()->is('waiter') ? 'active' : '' }}">
-                    <span>🍽️</span> Comandero Mesero
-                </a>
-            </li>
-            <li>
-                <a href="/kds" class="nav-link {{ request()->is('kds') ? 'active' : '' }}">
-                    <span>👨‍🍳</span> Cocina KDS
-                    <span class="pulse-dot"></span>
-                </a>
-            </li>
-            <li>
-                <a href="/pos" class="nav-link {{ request()->is('pos') ? 'active' : '' }}">
-                    <span>💳</span> Caja POS & Factus
-                </a>
-            </li>
-            <li>
-                <a href="/admin/menu" class="nav-link {{ request()->is('admin/menu') ? 'active' : '' }}">
-                    <span>🍗</span> Admin Menú
-                </a>
-            </li>
+            @auth
+                @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin() || Auth::user()->isMesero() || Auth::user()->isCajero())
+                <li>
+                    <a href="/waiter" class="nav-link {{ request()->is('waiter') ? 'active' : '' }}">
+                        <span>🍽️</span> Comandero Mesero
+                    </a>
+                </li>
+                @endif
+
+                @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin() || Auth::user()->isCocina())
+                <li>
+                    <a href="/kds" class="nav-link {{ request()->is('kds') ? 'active' : '' }}">
+                        <span>👨‍🍳</span> Cocina KDS
+                        <span class="pulse-dot"></span>
+                    </a>
+                </li>
+                @endif
+
+                @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin() || Auth::user()->isCajero())
+                <li>
+                    <a href="/pos" class="nav-link {{ request()->is('pos') ? 'active' : '' }}">
+                        <span>💳</span> Caja POS & Factus
+                    </a>
+                </li>
+                @endif
+
+                @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin())
+                <li>
+                    <a href="/admin/menu" class="nav-link {{ request()->is('admin/menu') ? 'active' : '' }}">
+                        <span>🍗</span> Admin Menú
+                    </a>
+                </li>
+                @endif
+            @endauth
+
             <li>
                 <a href="/privacy" class="nav-link {{ request()->is('privacy') ? 'active' : '' }}">
                     <span>🛡️</span> Habeas Data (SIC)
                 </a>
             </li>
+
+            @auth
             <li>
                 <button class="tutorial-btn" onclick="openTutorialModal()">
                     <span>📖</span> Guía de Uso
                 </button>
             </li>
+
+            <li>
+                <div class="user-auth-badge">
+                    <span class="user-role-tag role-{{ Auth::user()->role }}">
+                        {{ \App\Enums\UserRole::tryFrom(Auth::user()->role)?->label() ?? ucfirst(Auth::user()->role) }}
+                    </span>
+                    <span class="user-name-text" title="{{ Auth::user()->name }}">{{ Auth::user()->name }}</span>
+                    <form action="{{ route('logout') }}" method="POST" style="margin: 0; display: inline;">
+                        @csrf
+                        <button type="submit" class="btn-logout" title="Cerrar Sesión de Turno">
+                            <span>🚪 Salir</span>
+                        </button>
+                    </form>
+                </div>
+            </li>
+            @else
+            <li>
+                <a href="/login" class="btn-nav-login">
+                    <span>🔒</span> Iniciar Sesión
+                </a>
+            </li>
+            @endauth
         </ul>
     </nav>
 
