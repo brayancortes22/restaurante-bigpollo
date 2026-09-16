@@ -689,6 +689,11 @@
 
                 @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin())
                 <li>
+                    <a href="/admin/dashboard" class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}">
+                        <span>📊</span> Dashboard Dueño
+                    </a>
+                </li>
+                <li>
                     <a href="/admin/menu" class="nav-link {{ request()->is('admin/menu') ? 'active' : '' }}">
                         <span>🍗</span> Admin Menú
                     </a>

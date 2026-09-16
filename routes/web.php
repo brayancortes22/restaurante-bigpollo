@@ -32,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
         return match ($user?->role) {
             'cocina' => redirect('/kds'),
             'cajero' => redirect('/pos'),
-            'admin', 'superadmin' => redirect('/admin/menu'),
+            'admin', 'superadmin' => redirect('/admin/dashboard'),
             default => redirect('/waiter'),
         };
     });
@@ -58,8 +58,9 @@ Route::middleware(['auth'])->group(function () {
         })->name('pos');
     });
 
-    // Módulo Administrador de Menú, Precios y Recetas (Admin y SuperAdmin)
+    // Módulo Administrador: Dashboard Ejecutivo y Gestión de Menú (Admin y SuperAdmin)
     Route::middleware('role:admin')->group(function () {
+        Route::get('/admin/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/admin/menu', function () {
             return view('admin.menu');
         })->name('admin.menu');

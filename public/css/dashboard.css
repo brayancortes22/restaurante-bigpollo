@@ -1,0 +1,304 @@
+/* ==========================================================================
+   Restaurante Big Pollo — Executive Owner Dashboard (dashboard.css)
+   Métricas de negocio, KPIs en tiempo real y alertas para el dueño
+   ========================================================================== */
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.dashboard-title-box h2 {
+    font-size: 1.45rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dashboard-subtitle {
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+}
+
+.dashboard-date-badge {
+    background: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #FEF08A;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+/* --------------------------------------------------------------------------
+   Grilla de Métricas Principales (KPI Cards)
+   -------------------------------------------------------------------------- */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.kpi-card {
+    background: var(--surface-1);
+    border: 2px solid var(--border-subtle);
+    border-radius: 18px;
+    padding: 1.25rem 1.4rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    border-color: #FFD200;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.kpi-card.sales {
+    border-left: 5px solid #10B981;
+}
+
+.kpi-card.ticket {
+    border-left: 5px solid #FFD200;
+}
+
+.kpi-card.occupancy {
+    border-left: 5px solid #E52521;
+}
+
+.kpi-card.dian {
+    border-left: 5px solid #6366F1;
+}
+
+.kpi-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.kpi-label {
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.kpi-icon {
+    font-size: 1.35rem;
+}
+
+.kpi-value {
+    font-size: 1.65rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    line-height: 1.2;
+}
+
+.kpi-subtext {
+    font-size: 0.76rem;
+    color: var(--text-dim);
+    margin-top: 0.4rem;
+}
+
+/* --------------------------------------------------------------------------
+   Secciones del Dashboard (2 Columnas)
+   -------------------------------------------------------------------------- */
+.dashboard-two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.75rem;
+}
+
+@media (max-width: 992px) {
+    .dashboard-two-cols {
+        grid-template-columns: 1fr;
+    }
+}
+
+.dashboard-panel {
+    background: var(--surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 18px;
+    padding: 1.4rem;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.15rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.panel-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Desglose de Medios de Pago */
+.payment-breakdown-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.payment-row {
+    background: var(--surface-2);
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--border-subtle);
+}
+
+.payment-row-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+}
+
+.payment-progress-bg {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.payment-progress-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+.bar-cash { background: #10B981; }
+.bar-card { background: #6366F1; }
+.bar-transfer { background: #F59E0B; }
+
+/* Ranking Top Platos */
+.top-products-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.top-product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface-2);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-subtle);
+}
+
+.rank-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 210, 0, 0.2);
+    color: #FFD200;
+    font-weight: 900;
+    font-size: 0.82rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.top-prod-info {
+    flex: 1;
+    margin-left: 0.75rem;
+}
+
+.top-prod-name {
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: #FFFFFF;
+}
+
+.top-prod-sub {
+    font-size: 0.74rem;
+    color: var(--text-dim);
+}
+
+.top-prod-stats {
+    text-align: right;
+}
+
+.top-prod-qty {
+    font-size: 0.92rem;
+    font-weight: 900;
+    color: #FEF08A;
+}
+
+.top-prod-rev {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Semáforo de Alertas de Inventario
+   -------------------------------------------------------------------------- */
+.inventory-alerts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.85rem;
+}
+
+.inventory-alert-card {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    border-radius: 14px;
+    padding: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.inventory-alert-icon {
+    font-size: 1.5rem;
+}
+
+.inventory-alert-name {
+    font-size: 0.86rem;
+    font-weight: 800;
+    color: #FFFFFF;
+}
+
+.inventory-alert-stock {
+    font-size: 0.76rem;
+    color: #FCA5A5;
+    margin-top: 2px;
+}
+
+.inventory-ok-state {
+    text-align: center;
+    padding: 1.5rem;
+    color: #6EE7B7;
+    font-weight: 700;
+    font-size: 0.88rem;
+    background: rgba(16, 185, 129, 0.08);
+    border-radius: 12px;
+    border: 1px dashed rgba(16, 185, 129, 0.3);
+}

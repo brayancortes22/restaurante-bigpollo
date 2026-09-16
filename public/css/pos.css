@@ -1,0 +1,508 @@
+/* ==========================================================================
+   Restaurante Big Pollo — Caja POS, Auditoría & Facturación DIAN (pos.css)
+   Comprobación de consumo en mesa, adición de ítems omitidos y arqueo Z
+   ========================================================================== */
+
+.pos-grid {
+    display: grid;
+    grid-template-columns: 1fr 440px;
+    gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+    .pos-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Banner de Turno de Caja
+   -------------------------------------------------------------------------- */
+.shift-banner {
+    background: var(--surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 18px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.shift-info-box {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.shift-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #FFFFFF;
+}
+
+.shift-status-pill {
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.shift-status-pill.open {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34D399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.shift-status-pill.closed {
+    background: rgba(244, 63, 94, 0.15);
+    color: #F87171;
+    border: 1px solid rgba(244, 63, 94, 0.4);
+}
+
+.shift-base-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.shift-base-amount {
+    color: #F59E0B;
+    font-weight: 700;
+}
+
+.shift-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-shift-action {
+    padding: 0.65rem 1.25rem;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btn-open-shift {
+    background: linear-gradient(135deg, #E52521 0%, #B91C1C 100%);
+    color: #FFFFFF;
+    border: 1px solid #FFD200;
+    box-shadow: 0 4px 12px rgba(229, 37, 33, 0.35);
+}
+
+.btn-close-shift {
+    background: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    color: #FFFFFF;
+}
+
+.btn-close-shift:hover {
+    border-color: #EF4444;
+    color: #FCA5A5;
+}
+
+/* --------------------------------------------------------------------------
+   Sección de Comandas Pendientes de Cobro
+   -------------------------------------------------------------------------- */
+.orders-section {
+    background: var(--surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 18px;
+    padding: 1.5rem;
+}
+
+.orders-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.15rem;
+}
+
+.orders-section-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.order-row {
+    background: var(--surface-2);
+    border: 2px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.order-row:hover {
+    border-color: #FFD200;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.order-row.selected {
+    border-color: #E52521;
+    background: rgba(229, 37, 33, 0.12);
+    box-shadow: 0 0 16px rgba(229, 37, 33, 0.4);
+}
+
+.order-row-num {
+    font-weight: 900;
+    font-size: 1.05rem;
+    color: #FFFFFF;
+}
+
+.order-row-meta {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+}
+
+.order-row-total {
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: #FEF08A;
+}
+
+.order-row-items-count {
+    font-size: 0.74rem;
+    color: var(--text-dim);
+}
+
+/* Badges de Estado */
+.status-tag {
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 800;
+    font-size: 0.72rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.status-tag.ready {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34D399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.status-tag.served {
+    background: rgba(59, 130, 246, 0.2);
+    color: #93C5FD;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.status-tag.cooking {
+    background: rgba(245, 158, 11, 0.2);
+    color: #FBBF24;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.status-tag.delayed {
+    background: rgba(239, 68, 68, 0.25);
+    color: #FCA5A5;
+    border: 1px solid rgba(239, 68, 68, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   Panel de Liquidación y Comprobación de Consumo en Caja
+   -------------------------------------------------------------------------- */
+.checkout-panel {
+    background: var(--surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    padding: 1.4rem;
+    position: sticky;
+    top: 85px;
+    height: fit-content;
+}
+
+.checkout-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin-bottom: 0.35rem;
+}
+
+.checkout-subtitle {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+/* Caja de Auditoría y Comprobación de Consumo */
+.consumption-box {
+    background: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.consumption-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.65rem;
+    font-size: 0.84rem;
+    font-weight: 800;
+    color: #FFD200;
+}
+
+.consumption-items-list {
+    max-height: 190px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.consumption-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.35rem 0;
+    border-bottom: 1px dashed var(--border-subtle);
+    font-size: 0.82rem;
+}
+
+.consumption-row:last-child {
+    border-bottom: none;
+}
+
+.consumption-item-name {
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.consumption-item-price {
+    color: #FEF08A;
+    font-weight: 700;
+}
+
+/* Botón de Auditoría Anti-Fuga de Dinero */
+.btn-audit-addition {
+    width: 100%;
+    margin-top: 0.75rem;
+    background: linear-gradient(135deg, rgba(255, 210, 0, 0.15) 0%, rgba(245, 158, 11, 0.25) 100%);
+    border: 1px dashed #FFD200;
+    color: #FEF08A;
+    border-radius: 10px;
+    padding: 0.65rem;
+    font-size: 0.82rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    transition: all 0.2s;
+}
+
+.btn-audit-addition:hover {
+    background: #FFD200;
+    color: #0B0E14;
+    border-style: solid;
+}
+
+/* Totales de Liquidación */
+.pos-totals-box {
+    background: var(--surface-2);
+    border-radius: 14px;
+    padding: 0.95rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-subtle);
+}
+
+.pos-totals-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+}
+
+.pos-grand-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: #FEF08A;
+    border-top: 1px dashed var(--border-subtle);
+    padding-top: 0.5rem;
+    margin-top: 0.4rem;
+}
+
+/* Selector de Medios de Pago */
+.payment-methods-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.method-btn {
+    padding: 0.85rem 0.5rem;
+    border-radius: 12px;
+    background: var(--surface-2);
+    border: 2px solid var(--border-subtle);
+    color: var(--text-main);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.method-btn:hover {
+    border-color: #FFD200;
+}
+
+.method-btn.active {
+    border-color: #E52521;
+    background: rgba(229, 37, 33, 0.25);
+    color: #FFFFFF;
+}
+
+.btn-pay-order {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: #FFFFFF;
+    border: 1px solid #34D399;
+    width: 100%;
+    padding: 0.95rem;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+    transition: all 0.2s;
+}
+
+.btn-pay-order:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+}
+
+.btn-emit-dian {
+    background: linear-gradient(135deg, #E52521 0%, #B91C1C 100%);
+    color: #FFFFFF;
+    border: 1px solid #FFD200;
+    width: 100%;
+    padding: 0.85rem;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    transition: all 0.2s;
+}
+
+/* Factus DIAN Box */
+.dian-invoice-box {
+    margin-bottom: 1rem;
+    padding: 1.15rem;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px dashed var(--success);
+    border-radius: 14px;
+}
+
+.dian-title-row {
+    font-weight: 800;
+    font-size: 0.92rem;
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.cufe-box {
+    font-family: monospace;
+    font-size: 0.72rem;
+    word-break: break-all;
+    background: var(--surface-3);
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin-top: 0.4rem;
+    color: #E2E8F0;
+}
+
+/* --------------------------------------------------------------------------
+   Modal de Auditoría de Ítems Omitidos en Caja
+   -------------------------------------------------------------------------- */
+.audit-search-input {
+    width: 100%;
+    background: var(--surface-2);
+    border: 2px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    color: #FFFFFF;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    outline: none;
+}
+
+.audit-search-input:focus {
+    border-color: #FFD200;
+}
+
+.audit-products-scroll {
+    max-height: 280px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.audit-product-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.15s;
+}
+
+.audit-product-card:hover {
+    border-color: #FFD200;
+}
+
+.audit-btn-add-item {
+    background: #E52521;
+    border: 1px solid #FFD200;
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.audit-btn-add-item:active {
+    background: #B91C1C;
+}
