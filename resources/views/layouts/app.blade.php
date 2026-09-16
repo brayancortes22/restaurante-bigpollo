@@ -253,6 +253,39 @@
         @yield('content')
     </main>
 
+    <!-- ⚡ Simulador Flotante de Hora Pico -->
+    <div id="sim-panel" style="position: fixed; bottom: 1.5rem; left: 1.5rem; z-index: 9999; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div id="sim-card" style="background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(16px); border: 2px solid var(--primary); border-radius: 18px; padding: 1.25rem; width: 340px; box-shadow: 0 16px 36px rgba(0,0,0,0.6); display: none; margin-bottom: 0.75rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                <div style="font-weight: 800; font-size: 0.95rem; color: #FFFFFF; display: flex; align-items: center; gap: 0.4rem;">
+                    <span>⚡</span> Simulador de Hora Pico
+                </div>
+                <span class="pulse-dot"></span>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.4;">
+                Simula una avalancha de 5 mesas pidiendo combos simultáneamente, cocina KDS a máxima capacidad y cobro con Factura DIAN.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <button id="sim-burst-btn" onclick="runPeakHourSimulation()" style="width: 100%; padding: 0.75rem; border-radius: 12px; background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: #000; font-weight: 800; font-size: 0.85rem; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 0 4px 12px var(--warning-glow);">
+                    <span>🚀</span> Iniciar Ráfaga de Pedidos
+                </button>
+                <button id="sim-kds-btn" onclick="runKdsCookSimulation()" style="width: 100%; padding: 0.65rem; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border-highlight); color: #FFF; font-weight: 700; font-size: 0.8rem; cursor: pointer;">
+                    <span>👨‍🍳</span> Despachar Toda la Cocina
+                </button>
+                <button id="sim-pos-btn" onclick="runPosCashSimulation()" style="width: 100%; padding: 0.65rem; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border-highlight); color: #FFF; font-weight: 700; font-size: 0.8rem; cursor: pointer;">
+                    <span>💳</span> Cobrar y Facturar DIAN
+                </button>
+            </div>
+            <div id="sim-status-log" style="margin-top: 0.75rem; font-size: 0.72rem; color: #10B981; font-weight: 600; min-height: 18px; text-align: center;">
+                Listo para simular.
+            </div>
+        </div>
+
+        <button id="sim-toggle-btn" onclick="toggleSimPanel()" style="padding: 0.75rem 1.25rem; border-radius: 30px; background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%); color: #FFF; font-weight: 800; font-size: 0.85rem; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 8px 24px var(--primary-glow); transition: all 0.2s;">
+            <span>⚡ Modo Simulación Hora Pico</span>
+        </button>
+    </div>
+
     <div id="toast-container"></div>
 
     <script>
@@ -280,6 +313,160 @@
                 currency: 'COP',
                 maximumFractionDigits: 0
             }).format(amount);
+        }
+
+        // --- ⚡ Lógica de Simulación de Hora Pico ---
+        function toggleSimPanel() {
+            const card = document.getElementById('sim-card');
+            card.style.display = card.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function setSimLog(msg, color = '#10B981') {
+            const el = document.getElementById('sim-status-log');
+            if (el) {
+                el.innerText = msg;
+                el.style.color = color;
+            }
+        }
+
+        async function runPeakHourSimulation() {
+            setSimLog('🚀 Generando pedidos masivos...', '#F59E0B');
+            showToast('⚡ Ráfaga de hora pico iniciada en 5 mesas...', 'info');
+
+            try {
+                // Obtener mesas y menú
+                const tablesRes = await fetch('/api/tables');
+                const tablesJson = await tablesRes.json();
+                const menuRes = await fetch('/api/menu');
+                const menuJson = await menuRes.json();
+
+                const tables = tablesJson.data || [];
+                const products = [];
+                (menuJson.data || []).forEach(c => (c.products || []).forEach(p => products.push(p)));
+
+                if (tables.length === 0 || products.length === 0) {
+                    setSimLog('No hay mesas o productos disponibles.', '#F43F5E');
+                    return;
+                }
+
+                const diners = ['Andrés Gómez', 'María Paula Rincón', 'Camilo Restrepo', 'Valentina Díaz', 'Felipe Caicedo'];
+
+                for (let i = 0; i < Math.min(5, tables.length); i++) {
+                    const table = tables[i];
+                    const randomProd1 = products[i % products.length];
+                    const randomProd2 = products[(i + 1) % products.length];
+
+                    const payload = {
+                        restaurant_table_id: table.id,
+                        type: 'dine_in',
+                        customer_name: diners[i],
+                        customer_nit_cedula: `1098${i}23456`,
+                        customer_consent: true,
+                        items: [
+                            { product_id: randomProd1.id, quantity: 2, notes: 'Bien crocante' },
+                            { product_id: randomProd2.id, quantity: 1, notes: 'Salsa tártara extra' }
+                        ]
+                    };
+
+                    const orderRes = await fetch('/api/orders', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (orderRes.ok) {
+                        const json = await orderRes.json();
+                        showToast(`Mesa ${table.table_number}: Comanda #${json.data.order_number} enviada`, 'success');
+                    }
+                    await new Promise(r => setTimeout(r, 600)); // Pausa visual
+                }
+
+                setSimLog('✅ 5 comandas enviadas a Cocina KDS.', '#10B981');
+                showToast('¡Ráfaga completada! Revisa la pestaña Cocina KDS', 'success');
+
+                // Si estamos en /waiter, refrescar mesas
+                if (typeof loadTables === 'function') loadTables();
+            } catch (e) {
+                setSimLog('Error en la simulación.', '#F43F5E');
+                console.error(e);
+            }
+        }
+
+        async function runKdsCookSimulation() {
+            setSimLog('👨‍🍳 Cocinando y despachando...', '#6366F1');
+            showToast('Cocina acelerada: procesando todos los pedidos...', 'info');
+
+            try {
+                const res = await fetch('/api/orders');
+                const json = await res.json();
+                const orders = (json.data || []).filter(o => ['pending', 'in_kitchen'].includes(o.status));
+
+                for (const ord of orders) {
+                    // Pasar a in_kitchen
+                    await fetch(`/api/orders/${ord.id}/status`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify({ status: 'in_kitchen' })
+                    });
+                    await new Promise(r => setTimeout(r, 300));
+
+                    // Pasar a ready
+                    await fetch(`/api/orders/${ord.id}/status`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify({ status: 'ready' })
+                    });
+                    showToast(`Comanda #${ord.order_number} ¡LISTA PARA SERVIR!`, 'success');
+                    await new Promise(r => setTimeout(r, 300));
+                }
+
+                setSimLog('✅ Todos los pedidos listos en cocina.', '#10B981');
+                if (typeof loadKdsOrders === 'function') loadKdsOrders();
+            } catch (e) {
+                setSimLog('Error en cocina.', '#F43F5E');
+            }
+        }
+
+        async function runPosCashSimulation() {
+            setSimLog('💳 Cobrando y timbrando con Factus DIAN...', '#F59E0B');
+            showToast('Cobrando comandas y emitiendo factura electrónica...', 'info');
+
+            try {
+                // Asegurar turno de caja abierto
+                await fetch('/api/cash-shifts/open', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ opening_amount: 250000 })
+                }).catch(() => {});
+
+                const res = await fetch('/api/orders');
+                const json = await res.json();
+                const orders = (json.data || []).filter(o => o.status !== 'paid' && o.status !== 'cancelled');
+
+                for (const ord of orders) {
+                    // 1. Cobrar
+                    await fetch(`/api/orders/${ord.id}/status`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify({ status: 'paid' })
+                    });
+
+                    // 2. Emitir Factus DIAN
+                    const invRes = await fetch(`/api/orders/${ord.id}/invoice`, {
+                        method: 'POST',
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    
+                    showToast(`Comanda #${ord.order_number} pagada y Factura DIAN emitida`, 'success');
+                    await new Promise(r => setTimeout(r, 400));
+                }
+
+                setSimLog('✅ Todas las comandas cobradas y timbradas.', '#10B981');
+                if (typeof loadOrders === 'function') loadOrders();
+                if (typeof loadShiftStatus === 'function') loadShiftStatus();
+            } catch (e) {
+                setSimLog('Error en cobro.', '#F43F5E');
+            }
         }
     </script>
     @yield('scripts')
