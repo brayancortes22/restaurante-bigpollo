@@ -64,4 +64,12 @@ class OrderController extends Controller
 
         return new OrderResource($updatedOrder);
     }
+
+    public function emitInvoice(Order $order, \App\Actions\Invoices\EmitFactusInvoiceAction $action): OrderResource
+    {
+        $invoicedOrder = $action->execute($order);
+        $invoicedOrder->load(['items.product', 'table', 'user']);
+
+        return new OrderResource($invoicedOrder);
+    }
 }

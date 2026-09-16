@@ -28,3 +28,9 @@ Route::get('/menu', [MenuController::class, 'index']);
 Route::get('/orders', [OrderController::class, 'index']);
 Route::post('/orders', [OrderController::class, 'store']);
 Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus']);
+Route::post('/orders/{order}/invoice', [OrderController::class, 'emitInvoice']);
+
+// Control de Caja, Turnos y Arqueo Z (POS)
+Route::get('/cash-shifts/current', [\App\Http\Controllers\Api\CashShiftController::class, 'current']);
+Route::post('/cash-shifts/open', [\App\Http\Controllers\Api\CashShiftController::class, 'open']);
+Route::post('/cash-shifts/close', [\App\Http\Controllers\Api\CashShiftController::class, 'close']);

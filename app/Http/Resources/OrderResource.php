@@ -35,6 +35,13 @@ class OrderResource extends JsonResource
                 'role' => $this->user->role,
             ] : null,
             'items' => OrderItemResource::collection($this->whenLoaded('items')),
+            'electronic_invoice' => [
+                'bill_number' => $this->factus_bill_number,
+                'cufe' => $this->factus_cufe,
+                'qr_url' => $this->factus_qr_url,
+                'status' => $this->factus_status,
+                'error_message' => $this->factus_error_message,
+            ],
             'cancellation_reason' => $this->cancellation_reason,
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
