@@ -696,12 +696,6 @@
                 @endif
             @endauth
 
-            <li>
-                <a href="/privacy" class="nav-link {{ request()->is('privacy') ? 'active' : '' }}">
-                    <span>🛡️</span> Habeas Data (SIC)
-                </a>
-            </li>
-
             @auth
             <li>
                 <button class="tutorial-btn" onclick="startBigPolloTour()">
@@ -765,13 +759,15 @@
 
             <div class="footer-col">
                 <h4>🛡️ Seguridad y Cumplimiento</h4>
-                <div class="trust-badge">
-                    <span style="font-size: 1.2rem;">🏛️</span>
-                    <div>
-                        <div style="font-size: 0.8rem; font-weight: 700; color: #FFFFFF;">Habeas Data Ley 1581 / SIC</div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">Tratamiento de datos comensales blindado</div>
+                <a href="/privacy" style="text-decoration: none; color: inherit; display: block;">
+                    <div class="trust-badge" style="cursor: pointer; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#FFD200'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+                        <span style="font-size: 1.2rem;">🏛️</span>
+                        <div>
+                            <div style="font-size: 0.8rem; font-weight: 700; color: #FFFFFF;">Habeas Data Ley 1581 / SIC ➔</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">Tratamiento de datos comensales blindado</div>
+                        </div>
                     </div>
-                </div>
+                </a>
 
                 <div class="trust-badge">
                     <span style="font-size: 1.2rem;">⚡</span>
@@ -784,8 +780,12 @@
         </div>
 
         <div class="footer-bottom">
-            <div>
-                © {{ date('Y') }} Restaurante Big Pollo Asado & Broaster. Todos los derechos reservados.
+            <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                <span>© {{ date('Y') }} Restaurante Big Pollo Asado & Broaster. Todos los derechos reservados.</span>
+                <span>·</span>
+                <a href="/privacy" style="color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem; transition: color 0.2s;" onmouseover="this.style.color='#FFD200'" onmouseout="this.style.color='var(--text-muted)'">
+                    <span>🛡️</span> Política de Privacidad & Habeas Data (SIC)
+                </a>
             </div>
             <div>
                 Desarrollado con arquitectura limpia por <strong>Brayan Stid Cortés Lombana (bscl)</strong>.
