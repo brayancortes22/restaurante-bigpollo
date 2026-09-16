@@ -38,7 +38,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Módulo Mesero / Salonero y Punto de Caja (Mesero, Cajero, Admin y SuperAdmin)
-    Route::middleware('role:mesero,cajero')->group(function () {
+    Route::middleware('role:mesero,cajero,admin,superadmin')->group(function () {
         Route::get('/waiter', function () {
             return view('waiter');
         })->name('waiter');
@@ -58,11 +58,14 @@ Route::middleware(['auth'])->group(function () {
         })->name('pos');
     });
 
-    // Módulo Administrador: Dashboard Ejecutivo y Gestión de Menú (Admin y SuperAdmin)
+    // Módulo Administrador: Dashboard Ejecutivo, Menú y Editor de Plano (Admin y SuperAdmin)
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/admin/menu', function () {
             return view('admin.menu');
         })->name('admin.menu');
+        Route::get('/admin/floor-plan', function () {
+            return view('admin.floor_plan');
+        })->name('admin.floor-plan');
     });
 });

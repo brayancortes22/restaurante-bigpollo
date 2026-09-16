@@ -1,0 +1,557 @@
+/* ==========================================================================
+   Big Pollo — Editor de Plano del Salón (floor_plan.css)
+   Panel Admin: Lienzo drag & drop, sidebar de herramientas, paleta visual
+   ========================================================================== */
+
+:root {
+    --fp-bg:        #0B1120;
+    --fp-surface:   rgba(15, 23, 42, 0.9);
+    --fp-border:    rgba(255, 255, 255, 0.09);
+    --fp-text:      #E2E8F0;
+    --fp-muted:     #64748B;
+    --fp-accent:    #F59E0B;
+    --fp-success:   #10B981;
+    --fp-danger:    #EF4444;
+    --fp-purple:    #7C3AED;
+}
+
+/* ── Layout principal ── */
+.fp-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 1.25rem;
+    min-height: calc(100vh - 120px);
+}
+
+@media (max-width: 900px) {
+    .fp-layout {
+        grid-template-columns: 1fr;
+    }
+    .fp-canvas {
+        aspect-ratio: 4 / 3;
+    }
+}
+
+/* ── Sidebar de Herramientas ── */
+.fp-toolbar {
+    background: var(--fp-surface);
+    border: 1px solid var(--fp-border);
+    border-radius: 20px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    height: fit-content;
+    position: sticky;
+    top: 1rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+}
+
+.fp-toolbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--fp-border);
+}
+
+.fp-toolbar-title {
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--fp-text);
+}
+
+.fp-toolbar-sub {
+    font-size: 0.72rem;
+    color: var(--fp-muted);
+    font-weight: 600;
+}
+
+.fp-tool-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--fp-border);
+}
+
+.fp-tool-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.fp-tool-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--fp-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.fp-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.fp-form-lbl {
+    font-size: 0.72rem;
+    color: var(--fp-muted);
+    font-weight: 700;
+}
+
+.fp-input {
+    padding: 0.55rem 0.8rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--fp-border);
+    border-radius: 8px;
+    color: var(--fp-text);
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: border-color 0.2s;
+    width: 100%;
+}
+
+.fp-input:focus {
+    outline: none;
+    border-color: var(--fp-accent);
+    background: rgba(245,158,11,0.07);
+}
+
+/* ── Selector de forma ── */
+.fp-shape-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.fp-shape-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--fp-border);
+    border-radius: 8px;
+    color: var(--fp-muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+}
+
+.fp-shape-btn.active {
+    background: rgba(245,158,11,0.12);
+    border-color: var(--fp-accent);
+    color: var(--fp-accent);
+}
+
+.shape-preview {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: var(--fp-muted);
+    flex-shrink: 0;
+}
+
+.shape-square { border-radius: 3px; }
+.shape-round  { border-radius: 50%; }
+.shape-rect   { width: 24px; height: 14px; border-radius: 2px; }
+
+.fp-shape-btn.active .shape-preview {
+    background: var(--fp-accent);
+}
+
+/* ── Botones de acción ── */
+.fp-btn-add {
+    background: linear-gradient(135deg, #10B981, #059669);
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    padding: 0.65rem 1rem;
+    font-weight: 800;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.fp-btn-add:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(16,185,129,0.4);
+}
+
+.fp-btn-save {
+    background: linear-gradient(135deg, var(--fp-accent), #EF4444);
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    padding: 0.65rem 1rem;
+    font-weight: 800;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.fp-btn-save:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(245,158,11,0.4);
+}
+
+.fp-btn-save:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.fp-btn-reset {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--fp-border);
+    border-radius: 10px;
+    color: var(--fp-text);
+    padding: 0.6rem 1rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.fp-btn-reset:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.2);
+}
+
+.fp-btn-delete {
+    background: rgba(239,68,68,0.15);
+    border: 1px solid rgba(239,68,68,0.4);
+    border-radius: 10px;
+    color: #FCA5A5;
+    padding: 0.6rem 1rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.fp-btn-delete:hover:not(:disabled) {
+    background: rgba(239,68,68,0.3);
+}
+
+.fp-btn-delete:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.fp-btn-cancel {
+    background: transparent;
+    border: 1px solid var(--fp-border);
+    border-radius: 10px;
+    color: var(--fp-muted);
+    padding: 0.6rem 1rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.fp-btn-cancel:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+/* ── Tips ── */
+.fp-tips {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.fp-tips li {
+    font-size: 0.75rem;
+    color: var(--fp-muted);
+    line-height: 1.4;
+}
+
+/* ── Área del Lienzo ── */
+.fp-canvas-area {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.fp-canvas-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.fp-canvas-title {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--fp-text);
+    margin: 0;
+}
+
+.fp-canvas-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.fp-snap-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.82rem;
+    color: var(--fp-muted);
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+}
+
+.fp-snap-toggle input[type="checkbox"] {
+    accent-color: var(--fp-accent);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.fp-status-badge {
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 0.3rem 0.75rem;
+    border-radius: 30px;
+    white-space: nowrap;
+}
+
+.fp-status-saved   { background: rgba(16,185,129,0.15); color: #34D399; border: 1px solid rgba(16,185,129,0.3); }
+.fp-status-unsaved { background: rgba(245,158,11,0.15); color: #FCD34D; border: 1px solid rgba(245,158,11,0.3); }
+
+/* ── Lienzo (cuadrícula) ── */
+.fp-canvas {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(135deg, rgba(11,17,32,0.98) 0%, rgba(20,30,55,0.98) 100%);
+    background-size: 2% 2%;
+    border-radius: 16px;
+    border: 1px solid var(--fp-border);
+    overflow: hidden;
+    box-shadow:
+        0 12px 40px rgba(0,0,0,0.5),
+        inset 0 0 60px rgba(0,0,0,0.3);
+    touch-action: none;
+    cursor: default;
+}
+
+/* ── Zonas del lienzo (decorativas, no interactivas) ── */
+.fp-zone {
+    position: absolute;
+    border: 1px dashed rgba(255,255,255,0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-end;
+    padding: 0.35rem 0.5rem;
+    pointer-events: none;
+}
+
+.fp-zone-label {
+    font-size: 0.58rem;
+    font-weight: 800;
+    color: rgba(255,255,255,0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.fp-zone-calle     { background: rgba(255,255,255,0.01); border-color: rgba(255,255,255,0.1); }
+.fp-zone-principal { background: rgba(16,185,129,0.03);  border-color: rgba(16,185,129,0.1); }
+.fp-zone-kitchen   { background: rgba(239,68,68,0.03);   border-color: rgba(239,68,68,0.12); }
+.fp-zone-cash      { background: rgba(245,158,11,0.03);  border-color: rgba(245,158,11,0.1); }
+
+.fp-takeout-deco {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: rgba(6,182,212,0.5);
+    border: 1px dashed rgba(6,182,212,0.3);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* ── Mesas en el lienzo ── */
+.fp-table {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 6.5%;
+    aspect-ratio: 1;
+    min-width: 48px;
+    min-height: 48px;
+    background: rgba(30,41,59,0.95);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    user-select: none;
+    z-index: 10;
+    transition: box-shadow 0.15s, border-color 0.2s;
+    touch-action: none;
+}
+
+.fp-table:hover:not(.fp-is-dragging) {
+    border-color: var(--fp-accent);
+    box-shadow: 0 0 14px rgba(245,158,11,0.4);
+    z-index: 20;
+}
+
+.fp-table.fp-is-dragging {
+    cursor: grabbing;
+    opacity: 0.9;
+    z-index: 100;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.6);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.fp-table--round { border-radius: 50%; }
+.fp-table--rect  { width: 10%; aspect-ratio: 2/1; border-radius: 6px; }
+
+.fp-table--free   { border-color: rgba(52,211,153,0.5); }
+.fp-table--active { border-color: rgba(245,158,11,0.7); background: rgba(245,158,11,0.1); }
+
+.fp-table-num {
+    font-size: clamp(0.55rem, 0.9vw, 0.8rem);
+    font-weight: 900;
+    color: #F1F5F9;
+    line-height: 1;
+}
+
+.fp-table-cap {
+    font-size: clamp(0.4rem, 0.65vw, 0.6rem);
+    color: rgba(255,255,255,0.4);
+    font-weight: 700;
+}
+
+.fp-table-active-dot {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 0.65rem;
+}
+
+/* ── Footer del lienzo ── */
+.fp-canvas-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.fp-table-count {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--fp-muted);
+}
+
+.fp-hint {
+    font-size: 0.72rem;
+    color: rgba(100,116,139,0.7);
+    font-style: italic;
+}
+
+/* ── Modales del editor ── */
+.fp-modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 9000;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    backdrop-filter: blur(4px);
+}
+
+.fp-modal {
+    background: #111827;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+    animation: fp-modal-in 0.2s ease;
+}
+
+@keyframes fp-modal-in {
+    from { transform: scale(0.95); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+}
+
+.fp-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+
+.fp-modal-header h3 {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.fp-modal-close {
+    background: rgba(255,255,255,0.08);
+    border: none;
+    border-radius: 8px;
+    color: #94A3B8;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.fp-modal-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+.fp-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-bottom: 1.5rem;
+}
+
+.fp-modal-footer {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .fp-toolbar { position: static; }
+    .fp-canvas  { aspect-ratio: 3/4; }
+    .fp-table   { width: 10%; min-width: 40px; min-height: 40px; }
+    .fp-table--rect { width: 15%; }
+    .fp-canvas-header { flex-direction: column; align-items: flex-start; }
+}

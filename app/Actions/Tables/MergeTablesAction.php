@@ -64,8 +64,11 @@ class MergeTablesAction
                 $targetOrder = $sourceOrder;
             }
 
-            // Actualizar estados: liberar mesa origen y ocupar mesa destino
-            $sourceTable->update(['status' => TableStatus::Available->value]);
+            // Actualizar estados: liberar mesa origen, vincularla a destino y ocupar mesa destino
+            $sourceTable->update([
+                'status' => TableStatus::Available->value,
+                'merged_with_table_id' => $targetTable->id,
+            ]);
             $targetTable->update(['status' => TableStatus::Occupied->value]);
 
             return $targetOrder->load(['table', 'items.product']);

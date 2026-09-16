@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\LegalController;
 use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\TableController;
+use App\Http\Controllers\Api\TableLayoutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,3 +54,12 @@ Route::patch('/order-items/{item}/modify', [\App\Http\Controllers\Api\TableOpera
 Route::get('/deliveries', [\App\Http\Controllers\Api\DeliveryController::class, 'index']);
 Route::post('/deliveries', [\App\Http\Controllers\Api\DeliveryController::class, 'store']);
 Route::get('/tracking/{order_number}', [\App\Http\Controllers\Api\DeliveryController::class, 'track']);
+
+// ── Editor de Plano del Salón (Admin) ──────────────────────────────────────
+// Guardar distribución de coordenadas del mapa (POST /api/tables/layout)
+Route::post('/tables/layout', [\App\Http\Controllers\Api\TableLayoutController::class, 'updateLayout']);
+// Restaurar distribución original del plano Big Pollo
+Route::post('/tables/layout/reset', [\App\Http\Controllers\Api\TableLayoutController::class, 'resetToDefault']);
+// CRUD de mesas desde el editor admin
+Route::post('/admin/tables', [\App\Http\Controllers\Api\TableLayoutController::class, 'storeTable']);
+Route::delete('/admin/tables/{table}', [\App\Http\Controllers\Api\TableLayoutController::class, 'destroyTable']);

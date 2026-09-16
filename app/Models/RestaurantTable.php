@@ -16,8 +16,23 @@ class RestaurantTable extends Model
         'table_number',
         'capacity',
         'location',
+        'pos_x',
+        'pos_y',
+        'shape',
+        'zone',
+        'merged_with_table_id',
         'status',
     ];
+
+    public function mergedWith(): BelongsTo
+    {
+        return $this->belongsTo(RestaurantTable::class, 'merged_with_table_id');
+    }
+
+    public function mergedChildren(): HasMany
+    {
+        return $this->hasMany(RestaurantTable::class, 'merged_with_table_id');
+    }
 
     public function tenant(): BelongsTo
     {

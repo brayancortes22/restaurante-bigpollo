@@ -42,7 +42,13 @@ class ReleaseTableAction
                 ]);
             }
 
-            $table->update(['status' => TableStatus::Available->value]);
+            RestaurantTable::where('merged_with_table_id', $table->id)
+                ->update(['merged_with_table_id' => null]);
+
+            $table->update([
+                'status' => TableStatus::Available->value,
+                'merged_with_table_id' => null,
+            ]);
 
             return $table;
         });

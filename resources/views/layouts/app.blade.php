@@ -760,6 +760,11 @@
                         <span>🍗</span> Admin Menú
                     </a>
                 </li>
+                <li>
+                    <a href="/admin/floor-plan" class="nav-link {{ request()->is('admin/floor-plan') ? 'active' : '' }}">
+                        <span>🗺️</span> Plano Salón
+                    </a>
+                </li>
                 @endif
             @endauth
 

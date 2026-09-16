@@ -970,3 +970,331 @@
         border-radius: 12px;
     }
 }
+
+/* ==========================================================================
+   MAPA INTERACTIVO DE SALÓN — Floor Map
+   ========================================================================== */
+
+/* ── Toggle de Vista ── */
+.view-toggle-bar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 0.35rem;
+}
+
+.view-toggle-btn {
+    flex: 1;
+    padding: 0.65rem 1rem;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text-muted, #94A3B8);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.view-toggle-btn.active {
+    background: linear-gradient(135deg, #F59E0B, #EF4444);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+}
+
+/* ── Sección del Mapa ── */
+.floor-map-section {
+    background: var(--surface-1, rgba(15, 23, 42, 0.8));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.floor-map-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.9rem;
+}
+
+/* ── Leyenda ── */
+.map-legend-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+}
+
+.legend-chip {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.legend-free     { background: rgba(16, 185, 129, 0.15); color: #34D399; }
+.legend-occupied { background: rgba(245, 158, 11, 0.15); color: #FCD34D; }
+.legend-ready    { background: rgba(251, 191, 36, 0.15); color: #FDE68A; }
+.legend-merged   { background: rgba(139, 92, 246, 0.15); color: #C4B5FD; }
+.legend-takeout  { background: rgba(6, 182, 212, 0.15);  color: #67E8F9; }
+
+/* ── Lienzo del Mapa ── */
+.floor-map-canvas {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.98) 100%);
+    background-size: 6.25% 10%, 6.25% 10%;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.3);
+    touch-action: none;
+}
+
+/* ── Zonas Arquitectónicas ── */
+.map-zone {
+    position: absolute;
+    border: 1px dashed rgba(255,255,255,0.12);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.02);
+    display: flex;
+    align-items: flex-end;
+    padding: 0.3rem 0.5rem;
+    pointer-events: none;
+}
+
+.map-zone-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.map-zone-principal { background: rgba(16,185,129,0.03); border-color: rgba(16,185,129,0.12); }
+.map-zone-kitchen   { background: rgba(239,68,68,0.04);  border-color: rgba(239,68,68,0.15);  }
+.map-zone-cash      { background: rgba(245,158,11,0.04); border-color: rgba(245,158,11,0.15); }
+
+/* ── Mesas en el Mapa ── */
+.map-table {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 7%;
+    aspect-ratio: 1;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 8px;
+    background: rgba(30, 41, 59, 0.9);
+    border: 2px solid rgba(255,255,255,0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.2s;
+    user-select: none;
+    z-index: 10;
+    touch-action: none;
+}
+
+.map-table:hover:not(.is-dragging) {
+    transform: translate(-50%, -50%) scale(1.12);
+    z-index: 20;
+}
+
+.map-table--round { border-radius: 50%; }
+.map-table--rect  { width: 10%; aspect-ratio: 2/1; border-radius: 6px; }
+
+.map-table--available {
+    border-color: #34D399;
+    box-shadow: 0 0 10px rgba(52,211,153,0.25);
+}
+
+.map-table--occupied {
+    border-color: #F59E0B;
+    box-shadow: 0 0 10px rgba(245,158,11,0.3);
+    background: rgba(245,158,11,0.12);
+}
+
+.map-table--ready {
+    border-color: #FDE68A;
+    animation: pulse-ready 1.2s ease-in-out infinite;
+    box-shadow: 0 0 18px rgba(253,230,138,0.5);
+}
+
+@keyframes pulse-ready {
+    0%,100% { box-shadow: 0 0 10px rgba(253,230,138,0.4); }
+    50%     { box-shadow: 0 0 24px rgba(253,230,138,0.9); }
+}
+
+.map-table--selected {
+    border-color: #818CF8;
+    box-shadow: 0 0 20px rgba(129,140,248,0.6);
+    background: rgba(129,140,248,0.15);
+    transform: translate(-50%, -50%) scale(1.15);
+    z-index: 30;
+}
+
+.map-table--merged-parent {
+    border-color: #A78BFA;
+    border-style: dashed;
+    box-shadow: 0 0 14px rgba(167,139,250,0.4);
+}
+
+.map-table--merged-child {
+    opacity: 0.6;
+    border-style: dotted;
+}
+
+.map-table-number {
+    font-size: clamp(0.55rem, 1vw, 0.82rem);
+    font-weight: 900;
+    color: #F1F5F9;
+    line-height: 1;
+}
+
+.map-table-cap {
+    font-size: clamp(0.45rem, 0.8vw, 0.65rem);
+    color: rgba(255,255,255,0.45);
+    font-weight: 600;
+}
+
+.map-table-ready-dot {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    font-size: 0.75rem;
+    animation: bounce-dot 1s ease-in-out infinite;
+}
+
+@keyframes bounce-dot {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-3px); }
+}
+
+.map-table-merge-badge {
+    position: absolute;
+    bottom: -7px;
+    right: -7px;
+    font-size: 0.7rem;
+    background: rgba(0,0,0,0.6);
+    border-radius: 50%;
+    padding: 1px 2px;
+}
+
+/* ── Drag-to-Merge ── */
+.map-table.is-dragging {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1.2);
+    z-index: 100;
+    cursor: grabbing;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.map-table.drop-candidate {
+    border-color: rgba(139,92,246,0.6);
+    animation: pulse-drop 0.8s ease-in-out infinite;
+}
+
+.map-table.drop-hover {
+    border-color: #A78BFA;
+    background: rgba(167,139,250,0.25);
+    box-shadow: 0 0 24px rgba(167,139,250,0.7);
+    transform: translate(-50%, -50%) scale(1.2);
+    z-index: 50;
+}
+
+@keyframes pulse-drop {
+    0%,100% { box-shadow: 0 0 6px rgba(139,92,246,0.3); }
+    50%     { box-shadow: 0 0 18px rgba(139,92,246,0.6); }
+}
+
+.merge-drop-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(139,92,246,0.05);
+    border: 2px dashed rgba(139,92,246,0.4);
+    border-radius: 14px;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.merge-drag-banner {
+    background: linear-gradient(90deg, #7C3AED, #6D28D9);
+    color: #ffffff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 14px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 16px rgba(124,58,237,0.4);
+}
+
+/* ── Estación Para Llevar ── */
+.map-takeout-station {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, rgba(6,182,212,0.2), rgba(14,165,233,0.12));
+    border: 2px solid rgba(6,182,212,0.5);
+    border-radius: 14px;
+    width: 10%;
+    min-width: 56px;
+    padding: 0.5rem 0.25rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    z-index: 10;
+    transition: all 0.2s;
+}
+
+.map-takeout-station:hover,
+.map-takeout-station.takeout-active {
+    background: linear-gradient(135deg, rgba(6,182,212,0.4), rgba(14,165,233,0.3));
+    border-color: #22D3EE;
+    box-shadow: 0 0 20px rgba(6,182,212,0.5);
+    transform: translate(-50%, -50%) scale(1.08);
+}
+
+.takeout-icon  { font-size: 1.1rem; }
+.takeout-label {
+    font-size: 0.55rem;
+    font-weight: 800;
+    color: #67E8F9;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* ── Responsive Mapa ── */
+@media (max-width: 768px) {
+    .floor-map-canvas { aspect-ratio: 4 / 3; }
+    .map-table { width: 9%; min-width: 38px; min-height: 38px; }
+    .map-table--rect { width: 14%; }
+    .map-takeout-station { width: 13%; min-width: 48px; }
+}
+
+@media (max-width: 480px) {
+    .floor-map-canvas { aspect-ratio: 3 / 4; }
+    .map-table { width: 12%; min-width: 36px; min-height: 36px; }
+    .map-table--rect { width: 18%; }
+    .view-toggle-btn { font-size: 0.78rem; padding: 0.55rem 0.5rem; }
+}
