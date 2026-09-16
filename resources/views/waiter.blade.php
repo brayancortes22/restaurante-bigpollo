@@ -58,23 +58,23 @@
             <!-- Lienzo del Mapa (coordenadas pos_x/pos_y en %) -->
             <div id="floorMapCanvas" class="floor-map-canvas">
                 <!-- Zonas arquitectónicas del local (decorativas) -->
-                <div class="map-zone" style="left:0%;top:0%;width:62%;height:48%;">
+                <!-- Salón Calle cubre toda la franja superior (mesas 1-13 están en y=12-31%) -->
+                <div class="map-zone" style="left:0%;top:0%;width:100%;height:42%;">
                     <span class="map-zone-label">Salón Frente a la Calle</span>
                 </div>
-                <div class="map-zone map-zone-principal" style="left:0%;top:50%;width:52%;height:48%;">
+                <!-- Salón Principal: zona inferior izquierda (mesas 14-19 en x=9-36%, y=61-79%) -->
+                <div class="map-zone map-zone-principal" style="left:0%;top:44%;width:50%;height:54%;">
                     <span class="map-zone-label">Salón Principal</span>
                 </div>
-                <div class="map-zone map-zone-kitchen" style="left:63%;top:50%;width:37%;height:48%;">
+                <!-- Rotisería / Asador: zona inferior derecha -->
+                <div class="map-zone map-zone-kitchen" style="left:52%;top:44%;width:48%;height:54%;">
                     <span class="map-zone-label">🍗 Rotisería / Asador</span>
                 </div>
-                <div class="map-zone map-zone-cash" style="left:63%;top:0%;width:37%;height:48%;">
-                    <span class="map-zone-label">💳 Zona Caja</span>
-                </div>
 
-                <!-- Botón especial: Mostrador / Para Llevar -->
+                <!-- Botón especial: Mostrador / Para Llevar — dentro del asador -->
                 <div id="takeoutStation"
                      class="map-takeout-station"
-                     style="left:65%;top:52%;"
+                     style="left:75%;top:70%;"
                      onclick="selectTakeout()"
                      title="Pedido Para Llevar">
                     <div class="takeout-icon">🥡</div>
