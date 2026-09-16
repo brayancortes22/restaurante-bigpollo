@@ -122,13 +122,19 @@ async function loadOrders() {
     }
 }
 
+function formatTableLabel(table) {
+    if (!table) return 'Para Llevar / Domicilio';
+    const num = String(table.table_number || '');
+    return num.toLowerCase().startsWith('mesa') ? num : `Mesa ${num}`;
+}
+
 function selectOrder(order) {
     selectedOrder = order;
     document.querySelectorAll('.order-row').forEach(r => r.classList.remove('selected'));
-    if (event && event.currentTarget) event.currentTarget.classList.add('selected');
+    if (window.event && window.event.currentTarget) window.event.currentTarget.classList.add('selected');
 
     document.getElementById('checkout-content').style.display = 'block';
-    document.getElementById('selected-order-info').innerText = `Comanda #${order.order_number} — Mesa ${order.table ? order.table.table_number : 'Llevar'}`;
+    document.getElementById('selected-order-info').innerText = `Comanda #${order.order_number} — ${formatTableLabel(order.table)}`;
     
     // Renderizar Desglose de Consumo en Mesa (Auditoría de Caja)
     renderConsumptionDetails(order);
@@ -165,7 +171,7 @@ function renderConsumptionDetails(order) {
     }
 
     list.innerHTML = order.items.map(it => {
-        const prodName = it.product ? it.product.name : 'Plato';
+        const prodName = it.product_name || (it.product ? it.product.name : 'Plato');
         return `
             <div class="consumption-row">
                 <div>

@@ -3,7 +3,7 @@
 @section('title', 'Caja POS & Facturación DIAN')
 
 @section('styles')
-    <link rel="stylesheet" href="/css/pos.css">
+    <link rel="stylesheet" href="/css/pos.css?v={{ time() }}">
 @endsection
 
 @section('content')
@@ -182,5 +182,5 @@
 @endsection
 
 @section('scripts')
-    <script src="/js/pos.js"></script>
+    <script src="/js/pos.js?v={{ time() }}"></script>
 @endsection
