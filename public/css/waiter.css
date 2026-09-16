@@ -1284,17 +1284,165 @@
     line-height: 1.2;
 }
 
-/* ── Responsive Mapa ── */
+
+/* ── Responsive Mapa — Mobile First ── */
+
+/* Tablet (≤ 768px): lienzo más cuadrado, mesas un poco más grandes */
 @media (max-width: 768px) {
-    .floor-map-canvas { aspect-ratio: 4 / 3; }
-    .map-table { width: 9%; min-width: 38px; min-height: 38px; }
-    .map-table--rect { width: 14%; }
-    .map-takeout-station { width: 13%; min-width: 48px; }
+    .floor-map-section {
+        padding: 0.9rem;
+        border-radius: 14px;
+    }
+
+    .floor-map-canvas {
+        aspect-ratio: 4 / 3;
+        border-radius: 10px;
+    }
+
+    .map-table {
+        width: 10%;
+        min-width: 40px;
+        min-height: 40px;
+        border-width: 2px;
+    }
+
+    .map-table--rect {
+        width: 15%;
+        min-width: 54px;
+    }
+
+    .map-table-number {
+        font-size: 0.62rem;
+    }
+
+    .map-table-cap {
+        font-size: 0.48rem;
+    }
+
+    .map-takeout-station {
+        width: 12%;
+        min-width: 50px;
+        padding: 0.4rem 0.2rem;
+    }
+
+    .takeout-icon { font-size: 1rem; }
+    .takeout-label { font-size: 0.48rem; }
+
+    .map-zone-label {
+        font-size: 0.52rem;
+    }
+
+    .map-legend-bar {
+        gap: 0.3rem;
+    }
+
+    .legend-chip {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .floor-map-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+    }
+
+    .view-toggle-btn {
+        font-size: 0.82rem;
+        padding: 0.6rem 0.75rem;
+    }
 }
 
-@media (max-width: 480px) {
-    .floor-map-canvas { aspect-ratio: 3 / 4; }
-    .map-table { width: 12%; min-width: 36px; min-height: 36px; }
-    .map-table--rect { width: 18%; }
-    .view-toggle-btn { font-size: 0.78rem; padding: 0.55rem 0.5rem; }
+/* Móvil pequeño (≤ 540px): lienzo vertical con zonas apiladas */
+@media (max-width: 540px) {
+    .floor-map-canvas {
+        /* Cambiar a orientación vertical para pantallas pequeñas  */
+        aspect-ratio: 3 / 4;
+        /* Indicar que hay más contenido al usuario */
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .map-table {
+        width: 13%;
+        min-width: 38px;
+        min-height: 38px;
+    }
+
+    .map-table--rect {
+        width: 20%;
+        min-width: 52px;
+        min-height: 26px;
+    }
+
+    .map-table--round {
+        border-radius: 50%;
+    }
+
+    .map-table-number {
+        font-size: 0.55rem;
+    }
+
+    .map-table-cap {
+        display: none; /* Ocultar capacidad en móvil muy pequeño para ganar espacio */
+    }
+
+    .map-takeout-station {
+        width: 16%;
+        min-width: 48px;
+        border-radius: 10px;
+    }
+
+    .map-zone-label {
+        font-size: 0.44rem;
+    }
+
+    .view-toggle-bar {
+        gap: 0.3rem;
+        padding: 0.25rem;
+    }
+
+    .view-toggle-btn {
+        font-size: 0.75rem;
+        padding: 0.5rem 0.4rem;
+    }
+
+    .floor-map-section {
+        padding: 0.65rem;
+        border-radius: 12px;
+    }
+
+    .map-legend-bar {
+        gap: 0.25rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .legend-chip {
+        font-size: 0.6rem;
+        padding: 0.15rem 0.4rem;
+    }
+
+    /* Merge drag banner compacto */
+    .merge-drag-banner {
+        font-size: 0.78rem;
+        padding: 0.55rem 0.85rem;
+        border-radius: 10px;
+    }
+}
+
+/* Móvil muy pequeño (≤ 380px) */
+@media (max-width: 380px) {
+    .map-table {
+        width: 14%;
+        min-width: 36px;
+        min-height: 36px;
+    }
+
+    .floor-map-canvas {
+        aspect-ratio: 2 / 3;
+    }
+
+    .view-toggle-btn {
+        font-size: 0.7rem;
+    }
 }

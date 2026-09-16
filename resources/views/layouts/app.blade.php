@@ -1162,28 +1162,47 @@
         }
     </script>
     
-    <!-- Mobile Bottom App Bar para Meseros y Personal de Salón (<= 768px) -->
+    <!-- Mobile Bottom App Bar para Personal de Salón (<= 768px) -->
     <div class="mobile-bottom-bar">
+        @auth
+        @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin() || Auth::user()->isMesero() || Auth::user()->isCajero())
         <a href="/waiter" class="mobile-bottom-item {{ request()->is('waiter') ? 'active' : '' }}">
             <span class="mobile-bottom-icon">🍽️</span>
             <span>Mesas</span>
         </a>
+        @endif
+        @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin() || Auth::user()->isCocina())
         <a href="/kds" class="mobile-bottom-item {{ request()->is('kds') ? 'active' : '' }}">
             <span class="mobile-bottom-icon">👨‍🍳</span>
             <span>Cocina</span>
         </a>
+        @endif
+        @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin() || Auth::user()->isCajero())
         <a href="/pos" class="mobile-bottom-item {{ request()->is('pos') ? 'active' : '' }}">
             <span class="mobile-bottom-icon">💳</span>
             <span>Caja</span>
         </a>
+        @endif
+        @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin())
+        <a href="/admin/dashboard" class="mobile-bottom-item {{ request()->is('admin/dashboard') ? 'active' : '' }}">
+            <span class="mobile-bottom-icon">📊</span>
+            <span>Dashboard</span>
+        </a>
+        <a href="/admin/floor-plan" class="mobile-bottom-item {{ request()->is('admin/floor-plan') ? 'active' : '' }}">
+            <span class="mobile-bottom-icon">🗺️</span>
+            <span>Plano</span>
+        </a>
+        @else
         <a href="/admin/menu" class="mobile-bottom-item {{ request()->is('admin/menu') ? 'active' : '' }}">
             <span class="mobile-bottom-icon">🍗</span>
             <span>Menú</span>
         </a>
+        @endif
         <button type="button" class="mobile-bottom-item" onclick="startBigPolloTour()">
             <span class="mobile-bottom-icon">📖</span>
             <span>Tour</span>
         </button>
+        @endauth
     </div>
 
     @yield('scripts')
